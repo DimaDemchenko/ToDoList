@@ -5,11 +5,11 @@ using ToDoList.DBmodels;
 
 namespace ToDoList.Repository
 {
-    public class TaskRepository : ITasksRepository
+    public class TasksRepository : ITasksRepository
     {
         private readonly IDbConnection _connection;
 
-        public TaskRepository(IDbConnection connection)
+        public TasksRepository(IDbConnection connection)
         {
             _connection = connection;
         }

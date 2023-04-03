@@ -1,6 +1,6 @@
 ﻿namespace ToDoList.DBmodels
 {
-    public class Task
+    public class Tasks
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }
