@@ -1,4 +1,5 @@
 ﻿using ToDoList.DBmodels;
+using ToDoList.Models;
 
 namespace ToDoList.Repository
 {
@@ -10,6 +11,6 @@ namespace ToDoList.Repository
 
         Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<Object>> GetJoinedTasksAndCategoriesAsync();
+        Task<IEnumerable<JoinedTasksAndCategories>> GetJoinedTasksAndCategoriesAsync();
     }
 }

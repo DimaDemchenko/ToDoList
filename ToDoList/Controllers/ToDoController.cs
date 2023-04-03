@@ -20,9 +20,7 @@ namespace ToDoList.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var taskList = await _tasksRepository.GetAllAsync();
-            var categories = await _categoriesRepository.GetAllAsync();
-            var model = new { taskList, categories };
+            var model = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
             
             return View(model);
         }

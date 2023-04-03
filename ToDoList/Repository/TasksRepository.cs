@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using ToDoList.DBmodels;
+using ToDoList.Models;
 
 namespace ToDoList.Repository
 {
@@ -55,12 +56,12 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<IEnumerable<object>> GetJoinedTasksAndCategoriesAsync()
+        public async Task<IEnumerable<JoinedTasksAndCategories>> GetJoinedTasksAndCategoriesAsync()
         {
             try
             {
-                string query = "SELECT * FROM Categories join Tasks on Categories.id = Tasks.category_id";
-                return await _connection.QueryAsync<Object>(query);
+                string query = "SELECT title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id";
+                return await _connection.QueryAsync<JoinedTasksAndCategories>(query);
             }
             catch (Exception ex)
             {

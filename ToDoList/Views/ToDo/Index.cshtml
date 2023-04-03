@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model dynamic
+@model IEnumerable<JoinedTasksAndCategories>
 
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
@@ -10,6 +10,17 @@
         <button id="push">Add</button>
     </div>
     <div id="tasks">
-
+        @foreach(var item in Model)
+        {
+            <div class="task">
+                <span id="taskname">
+                   <span>@item.Name:</span>
+                   <span>@item.Title</span>
+                </span>
+                <button class="delete">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
+        }
     </div>
 }
