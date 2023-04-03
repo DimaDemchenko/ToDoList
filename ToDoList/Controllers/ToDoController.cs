@@ -18,6 +18,7 @@ namespace ToDoList.Controllers
             _categoriesRepository = categoriesRepository;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
@@ -29,6 +30,25 @@ namespace ToDoList.Controllers
                 Categories = categories.ToList(),
             };
             return View(indexModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTask(TaskValidation taskValidation) 
+        {
+            var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
+            var categories = await _categoriesRepository.GetAllAsync();
+
+            if (ModelState.IsValid)
+            {
+                Redirect("/");
+            }
+
+            IndexModel indexModel = new IndexModel
+            {
+                JoinedTasksAndCategories = joinedCategoriesAndTasks.ToList(),
+                Categories = categories.ToList(),
+            };
+            return View("Index", indexModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
