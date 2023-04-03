@@ -1,6 +1,11 @@
-﻿namespace ToDoList.Repository
+﻿using ToDoList.DBmodels;
+
+namespace ToDoList.Repository
 {
-    public interface Interface
+    public interface ICategoriesRepository
     {
+        Task<Category> GetByIdAsync(int id);
+
+        Task<IEnumerable<Category>> GetAllAsync();
     }
 }
