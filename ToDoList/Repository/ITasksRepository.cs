@@ -9,5 +9,7 @@ namespace ToDoList.Repository
         Task<int> CreateAsync(Tasks task);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<IEnumerable<Object>> GetJoinedTasksAndCategoriesAsync();
     }
 }

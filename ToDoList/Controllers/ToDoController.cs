@@ -1,26 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoList.Models;
+using ToDoList.Repository;
 
 namespace ToDoList.Controllers
 {
     public class ToDoController : Controller
     {
         private readonly ILogger<ToDoController> _logger;
+        private readonly ITasksRepository _tasksRepository;
+        private readonly ICategoriesRepository _categoriesRepository;
 
-        public ToDoController(ILogger<ToDoController> logger)
+        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository)
         {
             _logger = logger;
+            _tasksRepository = tasksRepository;
+            _categoriesRepository = categoriesRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            var taskList = await _tasksRepository.GetAllAsync();
+            var categories = await _categoriesRepository.GetAllAsync();
+            var model = new { taskList, categories };
+            
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

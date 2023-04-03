@@ -54,5 +54,18 @@ namespace ToDoList.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<IEnumerable<object>> GetJoinedTasksAndCategoriesAsync()
+        {
+            try
+            {
+                string query = "SELECT * FROM Categories join Tasks on Categories.id = Tasks.category_id";
+                return await _connection.QueryAsync<Object>(query);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
