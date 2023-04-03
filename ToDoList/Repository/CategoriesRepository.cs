@@ -16,7 +16,7 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT * FROM Tasks";
+                string query = "SELECT * FROM categories";
                 return await _connection.QueryAsync<Category>(query);
             }
             catch (Exception ex)
@@ -29,7 +29,7 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT * FROM Tasks WHERE Id = @id";
+                string query = "SELECT * FROM categories WHERE Id = @id";
                 return (Category)await _connection.QueryAsync<Category>(query, new { id});
             }
             catch (Exception ex)

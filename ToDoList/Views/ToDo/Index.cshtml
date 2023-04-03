@@ -1,17 +1,32 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "To Do List";
 }
-@model IEnumerable<JoinedTasksAndCategories>
+@model IndexModel
 
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
     <div id="newtask">
-        <input type="text" placeholder="Add Tasks">
+        <input type="text" name="TaskValidation.Title" class="text-input" placeholder="Add Tasks" required pattern="[A-Za-z0-9]+">
+        <span asp-validation-for="TaskValidation.Title"></span>
+
+
+        <select class="text-select" name="Category">
+            <option value="">Select a category</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+
+        <input type="datetime-local" name="TaskValidation.Deadline" class="text-date" required>
+        <span asp-validation-for="TaskValidation.Deadline"></span>
+
         <button id="push">Add</button>
+        
     </div>
 }
     <div id="tasks">
-        @foreach(var item in Model)
+    @foreach (var item in Model.JoinedTasksAndCategories)
         {
             <div class="task">
                 <span id="taskname">

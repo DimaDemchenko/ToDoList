@@ -20,9 +20,15 @@ namespace ToDoList.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
-            
-            return View(model);
+            var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
+            var categories = await _categoriesRepository.GetAllAsync();
+
+            IndexModel indexModel = new IndexModel
+            {
+                JoinedTasksAndCategories = joinedCategoriesAndTasks.ToList(),
+                Categories = categories.ToList(),
+            };
+            return View(indexModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
