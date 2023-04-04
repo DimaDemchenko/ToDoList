@@ -18,7 +18,7 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = @"INSERT INTO Tasks (CategoryId, Title, Deadline, IsCompleted)
+                string query = @"INSERT INTO Tasks (category_id, title, deadline, is_completed)
                          VALUES (@CategoryId, @Title, @Deadline, @IsCompleted);
                          SELECT SCOPE_IDENTITY()";
                 return await _connection.ExecuteScalarAsync<int>(query, task);

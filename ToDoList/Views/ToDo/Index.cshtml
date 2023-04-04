@@ -6,16 +6,17 @@
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
     <div id="newtask">
-        <input type="text" name="TaskValidation.Title" class="text-input" placeholder="Add Tasks" required pattern="[A-Za-z0-9]+">
-        <select class="text-select" name="Category">
-            <option value="">Select a category</option>
+        <input type="text" asp-for="TaskValidation.Title" name="TaskValidation.Title" class="text-input" placeholder="Add Tasks" required pattern="[A-Za-z0-9]+">
+        <select class="text-select" asp-for="TaskValidation.CategoryId" name="TaskValidation.CategoryId">
+            <option value="-1">Select a category</option>
             @foreach (var category in Model.Categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
         </select>
-        <input type="datetime-local" name="TaskValidation.Deadline" class="text-date" required>
+        <input type="datetime-local" asp-for="TaskValidation.Deadline" name="TaskValidation.Deadline" class="text-date" required>
         <button id="push">Add</button>
+      
     </div>
     <div>
         <span asp-validation-for="TaskValidation.Title"></span>
@@ -31,9 +32,12 @@
                    <span>@item.Name:</span>
                    <span>@item.Title</span>
                 </span>
-                <button class="delete">
-                    <i class="far fa-trash-alt"></i>
-                </button>
+                    <a class="delete">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                    <a class="delete">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
             </div>
         }
     </div>

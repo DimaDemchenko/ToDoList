@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ToDoList.DBmodels;
 using ToDoList.Models;
 using ToDoList.Repository;
 
@@ -37,17 +39,27 @@ namespace ToDoList.Controllers
         {
             var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
             var categories = await _categoriesRepository.GetAllAsync();
-
-            if (ModelState.IsValid)
-            {
-                Redirect("/");
-            }
-
             IndexModel indexModel = new IndexModel
             {
                 JoinedTasksAndCategories = joinedCategoriesAndTasks.ToList(),
                 Categories = categories.ToList(),
             };
+
+            if (ModelState.IsValid)
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<TaskValidation, Tasks>();
+                });
+                var mapper = new Mapper(config);
+                var task = mapper.Map<Tasks>(taskValidation);
+
+                int cretead = await _tasksRepository.CreateAsync(task);
+                Console.WriteLine(cretead);
+
+                return Redirect("/todo/index");
+            }
+
             return View("Index", indexModel);
         }
 
