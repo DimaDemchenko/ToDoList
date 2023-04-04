@@ -33,6 +33,11 @@ namespace ToDoList.Controllers
             };
             return View(indexModel);
         }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidation taskValidation) 

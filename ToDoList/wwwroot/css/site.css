@@ -117,13 +117,7 @@ body {
         font-weight: 400;
     }
 
-    a {
-        background-color: #6583e5;
-        color: #ffffff;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        height: 100%;
-        width: 40px;
-        border-radius: 5px;
-    }
+a svg {
+    height: 32px;
+    width: 32px;
+}
