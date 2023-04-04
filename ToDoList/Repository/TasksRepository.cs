@@ -69,14 +69,14 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<bool> UpdateStatusAsync(int id)
+        public async Task<bool> UpdateStatusAsync(int id, bool IsCompleted)
         {
             try
             {
                 string query = @"UPDATE Tasks
-                         SET is_completed = 1
-                         WHERE Id = @Id";
-                int rowsAffected = await _connection.ExecuteAsync(query);
+                         SET is_completed = @IsCompleted
+                         WHERE Id = @id";
+                int rowsAffected = await _connection.ExecuteAsync(query, new { id, IsCompleted });
                 return rowsAffected > 0;
             }
             catch (Exception ex)
