@@ -23,7 +23,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
+            var joinedCategoriesAndTasks = await _tasksRepository.GetUncompletedJoinedTasksWithCategories();
             var categories = await _categoriesRepository.GetAllAsync();
 
             IndexModel indexModel = new IndexModel
@@ -61,7 +61,7 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidation taskValidation) 
         {
-            var joinedCategoriesAndTasks = await _tasksRepository.GetJoinedTasksAndCategoriesAsync();
+            var joinedCategoriesAndTasks = await _tasksRepository.GetUncompletedJoinedTasksWithCategories();
             var categories = await _categoriesRepository.GetAllAsync();
             IndexModel indexModel = new IndexModel
             {

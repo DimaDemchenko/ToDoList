@@ -13,6 +13,6 @@ namespace ToDoList.Repository
 
         Task<bool> UpdateStatusAsync(int id, bool IsCompleted);
 
-        Task<IEnumerable<JoinedTasksAndCategories>> GetJoinedTasksAndCategoriesAsync();
+        Task<IEnumerable<JoinedTasksAndCategories>> GetUncompletedJoinedTasksWithCategories();
     }
 }

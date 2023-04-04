@@ -56,11 +56,11 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<IEnumerable<JoinedTasksAndCategories>> GetJoinedTasksAndCategoriesAsync()
+        public async Task<IEnumerable<JoinedTasksAndCategories>> GetUncompletedJoinedTasksWithCategories()
         {
             try
             {
-                string query = "SELECT Tasks.id, title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id";
+                string query = "SELECT Tasks.id, title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id WHERE is_completed = 0";
                 return await _connection.QueryAsync<JoinedTasksAndCategories>(query);
             }
             catch (Exception ex)
