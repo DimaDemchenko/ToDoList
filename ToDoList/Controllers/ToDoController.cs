@@ -34,8 +34,13 @@ namespace ToDoList.Controllers
             return View(indexModel);
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            if(await _tasksRepository.DeleteAsync(id))
+                return Redirect("/todo/index");
+
+            Console.WriteLine("DeletionError");
+            return View();
 
         }
 
