@@ -68,5 +68,21 @@ namespace ToDoList.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<bool> UpdateStatusAsync(int id)
+        {
+            try
+            {
+                string query = @"UPDATE Tasks
+                         SET is_completed = 1
+                         WHERE Id = @Id";
+                int rowsAffected = await _connection.ExecuteAsync(query);
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

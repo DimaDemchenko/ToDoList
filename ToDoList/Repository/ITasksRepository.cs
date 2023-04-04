@@ -11,6 +11,8 @@ namespace ToDoList.Repository
 
         Task<bool> DeleteAsync(int id);
 
+        Task<bool> UpdateAsync(Tasks task);
+
         Task<IEnumerable<JoinedTasksAndCategories>> GetJoinedTasksAndCategoriesAsync();
     }
 }
