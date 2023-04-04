@@ -60,7 +60,7 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id";
+                string query = "SELECT Tasks.id, title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id";
                 return await _connection.QueryAsync<JoinedTasksAndCategories>(query);
             }
             catch (Exception ex)
