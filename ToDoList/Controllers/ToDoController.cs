@@ -42,7 +42,6 @@ namespace ToDoList.Controllers
 
             Console.WriteLine("DeletionError");
             return Redirect("/");
-
         }
 
         [HttpGet]
