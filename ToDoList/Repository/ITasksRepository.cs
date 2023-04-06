@@ -11,5 +11,7 @@ namespace ToDoList.Repository
         System.Threading.Tasks.Task DeleteAsync(int id);
 
         System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted);
+
+        System.Threading.Tasks.Task<IEnumerable<DBmodels.Task>> GetAllByStatusAsync(bool IsCompleted);
     }
 }

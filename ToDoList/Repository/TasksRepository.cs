@@ -64,6 +64,28 @@ namespace ToDoList.Repository
             }
         }
 
+        public async Task<IEnumerable<DBmodels.Task>> GetAllByStatusAsync(bool IsCompleted)
+        {
+            try
+            {
+                string query = "SELECT * FROM Tasks JOIN Categories ON Tasks.category_id = Categories.id WHERE is_completed = @IsCompleted";
+
+                var tasks = await _connection.QueryAsync<DBmodels.Task, Category, DBmodels.Task>(query,
+
+                    (task, category) =>
+                    {
+                        task.Category = category;
+                        return task;
+                    },new { IsCompleted },
+                    splitOn: "Id");
+                return tasks;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted)
         {
             try

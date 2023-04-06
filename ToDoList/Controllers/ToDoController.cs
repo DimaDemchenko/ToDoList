@@ -23,12 +23,17 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var tasks = await _tasksRepository.GetAllAsync();
+            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
             var categories = await _categoriesRepository.GetAllAsync();
+
+            foreach (var item in tasks)
+            {
+                Console.WriteLine(item.IsCompleted);
+            }
 
             IndexModel indexModel = new IndexModel
             {
-                Tasks = tasks.ToList(), 
+                Tasks = tasks.Where(c => !c.IsCompleted).ToList(), 
                 Categories = categories.ToList(),
             };
             return View(indexModel);
@@ -54,7 +59,7 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
-            var tasks = await _tasksRepository.GetAllAsync();
+            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
             var categories = await _categoriesRepository.GetAllAsync();
 
             IndexModel indexModel = new IndexModel

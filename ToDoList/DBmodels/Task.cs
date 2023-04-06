@@ -1,4 +1,5 @@
-﻿namespace ToDoList.DBmodels
+﻿
+namespace ToDoList.DBmodels
 {
     public class Task
     {
