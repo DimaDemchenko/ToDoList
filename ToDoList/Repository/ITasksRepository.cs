@@ -1,16 +1,15 @@
 ﻿using ToDoList.DBmodels;
-using ToDoList.Models;
 
 namespace ToDoList.Repository
 {
     public interface ITasksRepository
     {
-        Task<IEnumerable<Tasks>> GetAllAsync();
+        System.Threading.Tasks.Task<IEnumerable<DBmodels.Task>> GetAllAsync();
 
-        Task CreateAsync(Tasks task);
+        System.Threading.Tasks.Task CreateAsync(DBmodels.Task task);
 
-        Task DeleteAsync(int id);
+        System.Threading.Tasks.Task DeleteAsync(int id);
 
-        Task UpdateStatusAsync(int id, bool IsCompleted);
+        System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted);
     }
 }

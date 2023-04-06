@@ -67,10 +67,10 @@ namespace ToDoList.Controllers
             {
                 var config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<TaskValidationModel, Tasks>();
+                    cfg.CreateMap<TaskValidationModel, DBmodels.Task>();
                 });
                 var mapper = new Mapper(config);
-                var task = mapper.Map<Tasks>(taskValidation);
+                var task = mapper.Map<DBmodels.Task>(taskValidation);
 
                 await _tasksRepository.CreateAsync(task);
 

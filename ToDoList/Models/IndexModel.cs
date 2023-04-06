@@ -4,7 +4,7 @@ namespace ToDoList.Models
 {
     public class IndexModel
     {
-        public List<Tasks>? Tasks { get; set; }
+        public List<DBmodels.Task>? Tasks { get; set; }
 
         public List<Category>? Categories{get; set;}
 

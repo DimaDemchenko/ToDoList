@@ -14,7 +14,7 @@ namespace ToDoList.Repository
         {
             _connection = connection;
         }
-        public async Task CreateAsync(Tasks task)
+        public async System.Threading.Tasks.Task CreateAsync(DBmodels.Task task)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(int id)
         {
             try
             {
@@ -42,13 +42,13 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllAsync()
+        public async Task<IEnumerable<DBmodels.Task>> GetAllAsync()
         {
             try
             {
                 string query = "SELECT * FROM Tasks JOIN Categories ON Tasks.category_id = Categories.id";
 
-                var tasks = await _connection.QueryAsync<Tasks, Category, Tasks>(query,
+                var tasks = await _connection.QueryAsync<DBmodels.Task, Category, DBmodels.Task>(query,
 
                     (task, category) =>
                     {
@@ -64,7 +64,7 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task UpdateStatusAsync(int id, bool IsCompleted)
+        public async System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted)
         {
             try
             {
