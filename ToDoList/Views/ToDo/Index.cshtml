@@ -25,23 +25,24 @@
     </div>
 }
     <div id="tasks">
-    @foreach (var item in Model.JoinedTasksAndCategories)
+    @foreach (var item in Model.Tasks)
     {
         <div class="task">
             <div class="spans">
                     <span class="main">
-                        <span class="category">@item.Name:</span>
+                        <span class="category">@item.Category.Name:</span>
                         <span>@item.Title</span>
                     </span>
                      <span class="deadline">
-                          @{
-                    TimeSpan? remainingTime = item.Deadline - DateTime.Now;
-                    string remainingTimeStr = string.Format("{0}d {1}h {2}m",
-                    remainingTime?.Days,
-                    remainingTime?.Hours,
-                    remainingTime?.Minutes);
-                }
-                @remainingTimeStr
+                         @{
+                            TimeSpan? remainingTime = item.Deadline - DateTime.Now;
+                            string remainingTimeStr = string.Format("{0}d {1}h {2}m",
+                            remainingTime?.Days,
+                            remainingTime?.Hours,
+                            remainingTime?.Minutes);
+                            }
+
+                            @remainingTimeStr
                       </span>
              </div>
                 <div class="buttons">

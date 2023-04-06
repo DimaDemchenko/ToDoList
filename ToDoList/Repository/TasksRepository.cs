@@ -47,21 +47,17 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT * FROM Tasks";
-                return await _connection.QueryAsync<Tasks>(query);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+                string query = "SELECT * FROM Tasks JOIN Categories ON Tasks.category_id = Categories.id";
 
-        public async Task<IEnumerable<JoinedTasksAndCategories>> GetUncompletedJoinedTasksWithCategories()
-        {
-            try
-            {
-                string query = "SELECT Tasks.id, title, deadline, is_completed, name FROM Categories join Tasks on Categories.id = Tasks.category_id WHERE is_completed = 0";
-                return await _connection.QueryAsync<JoinedTasksAndCategories>(query);
+                var tasks = await _connection.QueryAsync<Tasks, Category, Tasks>(query,
+
+                    (task, category) =>
+                    {
+                        task.Category = category;
+                        return task;
+                    },
+                    splitOn: "Id");
+                return tasks;
             }
             catch (Exception ex)
             {

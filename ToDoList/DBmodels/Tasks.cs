@@ -7,6 +7,6 @@
         public string Title { get; set; }
         public DateTime? Deadline { get; set; }
         public bool IsCompleted { get; set; }
-        public Category Category { get; set; }  
+        public Category Category { get; set; }
     }
 }

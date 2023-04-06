@@ -23,12 +23,12 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var joinedCategoriesAndTasks = await _tasksRepository.GetUncompletedJoinedTasksWithCategories();
+            var tasks = await _tasksRepository.GetAllAsync();
             var categories = await _categoriesRepository.GetAllAsync();
 
             IndexModel indexModel = new IndexModel
             {
-                JoinedTasksAndCategories = joinedCategoriesAndTasks.ToList(),
+                Tasks = tasks.ToList(), 
                 Categories = categories.ToList(),
             };
             return View(indexModel);
@@ -52,7 +52,6 @@ namespace ToDoList.Controllers
                 return Redirect("/todo/index");
             }
 
-            Console.WriteLine("UpdationError");
             return Redirect("/");
 
         }
@@ -60,11 +59,12 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidation taskValidation) 
         {
-            var joinedCategoriesAndTasks = await _tasksRepository.GetUncompletedJoinedTasksWithCategories();
+            var tasks = await _tasksRepository.GetAllAsync();
             var categories = await _categoriesRepository.GetAllAsync();
+
             IndexModel indexModel = new IndexModel
             {
-                JoinedTasksAndCategories = joinedCategoriesAndTasks.ToList(),
+                Tasks = tasks.ToList(),
                 Categories = categories.ToList(),
             };
 
@@ -78,7 +78,6 @@ namespace ToDoList.Controllers
                 var task = mapper.Map<Tasks>(taskValidation);
 
                 int cretead = await _tasksRepository.CreateAsync(task);
-                Console.WriteLine(cretead);
 
                 return Redirect("/todo/index");
             }
