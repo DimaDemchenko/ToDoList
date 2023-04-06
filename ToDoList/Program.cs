@@ -34,5 +34,4 @@ app.MapControllerRoute(
     pattern: "{controller=ToDo}/{action=Index}/{id?}");
 
 app.Run();
-// TODO: Refactor viewmodel
-// Add sort by desc
+

@@ -26,14 +26,11 @@ namespace ToDoList.Controllers
             var tasks = await _tasksRepository.GetAllByStatusAsync(false);
             var categories = await _categoriesRepository.GetAllAsync();
 
-            foreach (var item in tasks)
-            {
-                Console.WriteLine(item.IsCompleted);
-            }
-
             IndexModel indexModel = new IndexModel
             {
-                Tasks = tasks.Where(c => !c.IsCompleted).ToList(), 
+                Tasks = tasks.Where(c => !c.IsCompleted)
+                            .OrderBy(c => c.Deadline)
+                            .ToList(), 
                 Categories = categories.ToList(),
             };
             return View(indexModel);
