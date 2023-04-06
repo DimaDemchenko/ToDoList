@@ -2,7 +2,7 @@
 
 namespace ToDoList.Models
 {
-    public class TaskValidation
+    public class TaskValidationModel
     {
         public int Id { get; set; }
 
