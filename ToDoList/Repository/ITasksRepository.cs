@@ -7,10 +7,10 @@ namespace ToDoList.Repository
     {
         Task<IEnumerable<Tasks>> GetAllAsync();
 
-        Task<int> CreateAsync(Tasks task);
+        Task CreateAsync(Tasks task);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
-        Task<bool> UpdateStatusAsync(int id, bool IsCompleted);
+        Task UpdateStatusAsync(int id, bool IsCompleted);
     }
 }

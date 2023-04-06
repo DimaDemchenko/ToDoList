@@ -37,27 +37,22 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            if(await _tasksRepository.DeleteAsync(id))
-                return Redirect("/todo/index");
+            await _tasksRepository.DeleteAsync(id);
 
-            Console.WriteLine("DeletionError");
-            return Redirect("/");
+            return Redirect("/todo/index"); 
         }
 
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
-            if (await _tasksRepository.UpdateStatusAsync(id, true))
-            {
-                return Redirect("/todo/index");
-            }
-
-            return Redirect("/");
-
+            await _tasksRepository.UpdateStatusAsync(id, true);
+            
+            return Redirect("/todo/index");
+            
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTask(TaskValidation taskValidation) 
+        public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
             var tasks = await _tasksRepository.GetAllAsync();
             var categories = await _categoriesRepository.GetAllAsync();
@@ -72,12 +67,12 @@ namespace ToDoList.Controllers
             {
                 var config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<TaskValidation, Tasks>();
+                    cfg.CreateMap<TaskValidationModel, Tasks>();
                 });
                 var mapper = new Mapper(config);
                 var task = mapper.Map<Tasks>(taskValidation);
 
-                int cretead = await _tasksRepository.CreateAsync(task);
+                await _tasksRepository.CreateAsync(task);
 
                 return Redirect("/todo/index");
             }

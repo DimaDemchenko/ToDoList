@@ -14,14 +14,14 @@ namespace ToDoList.Repository
         {
             _connection = connection;
         }
-        public async Task<int> CreateAsync(Tasks task)
+        public async Task CreateAsync(Tasks task)
         {
             try
             {
                 string query = @"INSERT INTO Tasks (category_id, title, deadline, is_completed)
                          VALUES (@CategoryId, @Title, @Deadline, @IsCompleted);
                          SELECT SCOPE_IDENTITY()";
-                return await _connection.ExecuteScalarAsync<int>(query, task);
+                await _connection.ExecuteAsync(query, task);
             }
             catch (Exception ex)
             {
@@ -29,13 +29,12 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             try
             {
                 string query = "DELETE FROM Tasks WHERE Id = @id";
-                int rowsAffected = await _connection.ExecuteAsync(query, new { id });
-                return rowsAffected > 0;
+                await _connection.ExecuteAsync(query, new { id });
             }
             catch(Exception ex)
             {
@@ -65,15 +64,15 @@ namespace ToDoList.Repository
             }
         }
 
-        public async Task<bool> UpdateStatusAsync(int id, bool IsCompleted)
+        public async Task UpdateStatusAsync(int id, bool IsCompleted)
         {
             try
             {
                 string query = @"UPDATE Tasks
                          SET is_completed = @IsCompleted
                          WHERE Id = @id";
-                int rowsAffected = await _connection.ExecuteAsync(query, new { id, IsCompleted });
-                return rowsAffected > 0;
+                await _connection.ExecuteAsync(query, new { id, IsCompleted });
+               
             }
             catch (Exception ex)
             {

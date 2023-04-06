@@ -8,7 +8,7 @@ namespace ToDoList.Models
 
         public List<Category>? Categories{get; set;}
 
-        public TaskValidation? TaskValidation { get; set; }
+        public TaskValidationModel? TaskValidation { get; set; }
 
     }
 }
