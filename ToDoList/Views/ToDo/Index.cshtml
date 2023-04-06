@@ -6,7 +6,7 @@
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
     <div id="newtask">
-        <input type="text" asp-for="TaskValidation.Title" name="TaskValidation.Title" class="text-input" placeholder="Add Tasks" required pattern="[A-Za-z0-9]+">
+        <input type="text" asp-for="TaskValidation.Title" name="TaskValidation.Title" class="text-input" placeholder="Add Tasks" required>
         <select class="text-select" asp-for="TaskValidation.CategoryId" name="TaskValidation.CategoryId">
             <option value="-1">Select a category</option>
             @foreach (var category in Model.Categories)
@@ -26,14 +26,15 @@
 }
     <div id="tasks">
     @foreach (var item in Model.JoinedTasksAndCategories)
-        {
-            <div class="task">
-                <span id="taskname">
-                   <span>@item.Name:</span>
-                   <span>@item.Title</span>
-                </span>
-            <span>
-                @{
+    {
+        <div class="task">
+            <div class="spans">
+                    <span class="main">
+                        <span class="category">@item.Name:</span>
+                        <span>@item.Title</span>
+                    </span>
+                     <span class="deadline">
+                          @{
                     TimeSpan? remainingTime = item.Deadline - DateTime.Now;
                     string remainingTimeStr = string.Format("{0}d {1}h {2}m",
                     remainingTime?.Days,
@@ -41,19 +42,21 @@
                     remainingTime?.Minutes);
                 }
                 @remainingTimeStr
-            </span>
+                      </span>
+             </div>
                 <div class="buttons">
                     <a href="/todo/complete?id=@item.Id"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                      </svg></a>
-                <a href="/todo/delete?id=@item.Id">
+                      </svg>
+                     </a>
+                    <a href="/todo/delete?id=@item.Id">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
                           </svg>
                     </a>
                 </div>
-            </div>
-        }
+        </div>
+    }
     </div>
 

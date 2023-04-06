@@ -5,6 +5,12 @@
     margin: 0;
     box-sizing: border-box;
 }
+main {
+width: 100%;
+}
+form {
+    max-height: 85px;
+}
 
 body {
     height: 100vh;
@@ -26,6 +32,7 @@ body {
 #newtask {
     position: relative;
     padding: 30px 20px;
+    max-height: 85px;
 }
 
     #newtask .text-input {
@@ -117,7 +124,39 @@ body {
         font-weight: 400;
     }
 
+.buttons {
+    min-width: 70px;
+    min-height: 32px;
+}
+
 a svg {
     height: 32px;
     width: 32px;
+}
+a {
+    text-decoration: none;
+}
+
+.spans
+{
+    width: 82%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.deadline{
+    margin-left:auto;
+    text-align: center;
+}
+span{
+    display: inline-block;
+}
+.category
+{
+    font-weight: bold !important;
+    font-style:normal;
+}
+.main
+{
+    max-width: 90%;
 }
