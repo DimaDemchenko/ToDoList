@@ -58,26 +58,16 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
-            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
-            var categories = await _categoriesRepository.GetAllAsync();
-
-            IndexModel indexModel = new IndexModel
-            {
-                Tasks = tasks.ToList(),
-                Categories = categories.ToList(),
-            };
-
             if (ModelState.IsValid)
             {
                 var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
                 await _tasksRepository.CreateAsync(task);
-
-                return Redirect("/todo/index");
             }
 
-            return View("Index", indexModel);
+            return Redirect("/todo/index");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
