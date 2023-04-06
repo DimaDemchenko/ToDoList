@@ -12,12 +12,14 @@ namespace ToDoList.Controllers
         private readonly ILogger<ToDoController> _logger;
         private readonly ITasksRepository _tasksRepository;
         private readonly ICategoriesRepository _categoriesRepository;
+        private readonly IMapper _mapper;
 
-        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository)
+        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper)
         {
             _logger = logger;
             _tasksRepository = tasksRepository;
             _categoriesRepository = categoriesRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -67,12 +69,7 @@ namespace ToDoList.Controllers
 
             if (ModelState.IsValid)
             {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.CreateMap<TaskValidationModel, DBmodels.Task>();
-                });
-                var mapper = new Mapper(config);
-                var task = mapper.Map<DBmodels.Task>(taskValidation);
+                var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
                 await _tasksRepository.CreateAsync(task);
 

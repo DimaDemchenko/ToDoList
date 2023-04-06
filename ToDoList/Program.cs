@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using ToDoList.AutoMapper;
 using ToDoList.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")
 
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 var app = builder.Build();
 
