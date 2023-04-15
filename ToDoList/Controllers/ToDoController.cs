@@ -22,6 +22,22 @@ namespace ToDoList.Controllers
             _mapper = mapper;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> History() 
+        {
+            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
+            var categories = await _categoriesRepository.GetAllAsync();
+
+            IndexModel indexModel = new IndexModel
+            {
+                Tasks = tasks.OrderBy(c => c.Deadline)
+                            .ToList(),
+                Categories = categories.ToList(),
+            };
+            return View(indexModel);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
