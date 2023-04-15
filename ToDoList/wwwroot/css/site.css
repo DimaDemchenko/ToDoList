@@ -160,3 +160,21 @@ span{
 {
     max-width: 90%;
 }
+
+.error-container {
+    background-color: #ffe7e7;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 50%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.error-text {
+    display: block;
+    color: #111111;
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}

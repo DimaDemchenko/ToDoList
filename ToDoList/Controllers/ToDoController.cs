@@ -30,8 +30,7 @@ namespace ToDoList.Controllers
 
             IndexModel indexModel = new IndexModel
             {
-                Tasks = tasks.Where(c => !c.IsCompleted)
-                            .OrderBy(c => c.Deadline)
+                Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(), 
                 Categories = categories.ToList(),
             };

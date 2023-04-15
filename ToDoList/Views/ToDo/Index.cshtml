@@ -1,7 +1,19 @@
-﻿@{
+﻿@model IndexModel
+@{
     ViewData["Title"] = "To Do List";
+    
+
 }
-@model IndexModel
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="error-container">
+        <span class="error-text" asp-validation-for="TaskValidation.Title"></span>
+        <span class="error-text" asp-validation-for="TaskValidation.CategoryId"></span>
+        <span class="error-text" asp-validation-for="TaskValidation.Deadline"></span>
+    </div>
+}
 
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
@@ -16,13 +28,16 @@
         </select>
         <input type="datetime-local" asp-for="TaskValidation.Deadline" name="TaskValidation.Deadline" class="text-date" required>
         <button id="push">Add</button>
-      
+        
     </div>
-    <div>
-        <span asp-validation-for="TaskValidation.Title"></span>
-        <span asp-validation-for="TaskValidation.CategoryId"></span>
-        <span asp-validation-for="TaskValidation.Deadline"></span>
-    </div>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="error-container">
+            <span class="error-text" asp-validation-for="TaskValidation.Title"></span>
+            <span class="error-text" asp-validation-for="TaskValidation.CategoryId"></span>
+            <span class="error-text" asp-validation-for="TaskValidation.Deadline"></span>
+        </div>
+    }
 }
     <div id="tasks">
     @foreach (var item in Model.Tasks)
@@ -36,11 +51,9 @@
                      <span class="deadline">
                          @{
                             TimeSpan? remainingTime = item.Deadline - DateTime.Now;
-                            string remainingTimeStr = string.Format("{0}d {1}h {2}m",
-                            remainingTime?.Days,
-                            remainingTime?.Hours,
+                            string remainingTimeStr = string.Format("{0}d {1}h {2}m", remainingTime?.Days, remainingTime?.Hours,
                             remainingTime?.Minutes);
-                            }
+                           }
 
                             @remainingTimeStr
                       </span>
