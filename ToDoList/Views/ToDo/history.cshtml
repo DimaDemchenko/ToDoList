@@ -5,8 +5,11 @@
 
 }
 <div id="tasks">
-    @foreach (var item in Model.Tasks)
+    <div>Task history:</div>
+    @if(Model.Tasks.Any())
     {
+        @foreach (var item in Model.Tasks)
+        {
         <div class="task">
             <div class="spans">
                     <span class="main">
@@ -34,5 +37,10 @@
                     </a>
                 </div>
         </div>
+        }
+        }
+    else
+    {
+        <div>History is clear</div>
     }
     </div>
