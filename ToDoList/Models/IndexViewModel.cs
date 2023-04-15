@@ -2,7 +2,7 @@
 
 namespace ToDoList.Models
 {
-    public class IndexModel
+    public class IndexViewModel
     {
         public List<DBmodels.Task>? Tasks { get; set; }
 

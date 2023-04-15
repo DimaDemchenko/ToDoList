@@ -29,7 +29,7 @@ namespace ToDoList.Controllers
             var tasks = await _tasksRepository.GetAllByStatusAsync(false);
             var categories = await _categoriesRepository.GetAllAsync();
 
-            IndexModel indexModel = new IndexModel
+            HistoryViewModel indexModel = new HistoryViewModel
             {
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(),
@@ -44,7 +44,7 @@ namespace ToDoList.Controllers
             var tasks = await _tasksRepository.GetAllByStatusAsync(false);
             var categories = await _categoriesRepository.GetAllAsync();
 
-            IndexModel indexModel = new IndexModel
+            IndexViewModel indexModel = new IndexViewModel
             {
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(), 
