@@ -22,18 +22,23 @@ namespace ToDoList.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async  Task<IActionResult> Recover(int id) 
+        {
+            await _tasksRepository.UpdateStatusAsync(id, false);
+
+            return Redirect("/todo/index");
+        }
 
         [HttpGet]
         public async Task<IActionResult> History() 
         {
-            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
-            var categories = await _categoriesRepository.GetAllAsync();
+            var tasks = await _tasksRepository.GetAllByStatusAsync(true);
 
             HistoryViewModel indexModel = new HistoryViewModel
             {
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(),
-                Categories = categories.ToList(),
             };
             return View(indexModel);
         }
