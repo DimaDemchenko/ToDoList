@@ -27,7 +27,7 @@ namespace ToDoList.Controllers
         {
             await _tasksRepository.UpdateStatusAsync(id, false);
 
-            return Redirect("/todo/index");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -63,16 +63,15 @@ namespace ToDoList.Controllers
         {
             await _tasksRepository.DeleteAsync(id);
 
-            return Redirect("/todo/index"); 
+            return RedirectToAction("Index"); 
         }
 
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
             await _tasksRepository.UpdateStatusAsync(id, true);
-            
-            return Redirect("/todo/index");
-            
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -84,7 +83,7 @@ namespace ToDoList.Controllers
 
                 await _tasksRepository.CreateAsync(task);
 
-                return Redirect("/todo/index");
+                return RedirectToAction("Index");
             }
 
             var tasks = await _tasksRepository.GetAllByStatusAsync(false);
