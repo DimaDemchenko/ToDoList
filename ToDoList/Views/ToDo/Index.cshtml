@@ -6,14 +6,7 @@
 }
 
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="error-container">
-        <span class="error-text" asp-validation-for="TaskValidation.Title"></span>
-        <span class="error-text" asp-validation-for="TaskValidation.CategoryId"></span>
-        <span class="error-text" asp-validation-for="TaskValidation.Deadline"></span>
-    </div>
-}
+
 
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
@@ -30,14 +23,11 @@
         <button id="push">Add</button>
         
     </div>
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="error-container">
-            <span class="error-text" asp-validation-for="TaskValidation.Title"></span>
-            <span class="error-text" asp-validation-for="TaskValidation.CategoryId"></span>
-            <span class="error-text" asp-validation-for="TaskValidation.Deadline"></span>
-        </div>
-    }
+    <div class="error-container">
+        <span class="error-text" asp-validation-for="TaskValidation.Title"></span>
+        <span class="error-text" asp-validation-for="TaskValidation.CategoryId"></span>
+        <span class="error-text" asp-validation-for="TaskValidation.Deadline"></span>
+    </div>
 }
     <div id="tasks">
     @if (Model.Tasks.Any())

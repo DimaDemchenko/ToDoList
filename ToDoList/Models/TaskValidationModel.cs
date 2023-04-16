@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ToDoList.ValidationAttributes;
 
 namespace ToDoList.Models
 {
@@ -14,6 +15,7 @@ namespace ToDoList.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
+        [DateValidation(ErrorMessage = "Choose correct date!")]
         public DateTime? Deadline { get; set; }
 
         public bool IsCompleted { get; set; }

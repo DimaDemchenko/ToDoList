@@ -83,9 +83,20 @@ namespace ToDoList.Controllers
                 var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
                 await _tasksRepository.CreateAsync(task);
+
+                return Redirect("/todo/index");
             }
 
-            return Redirect("/todo/index");
+            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
+            var categories = await _categoriesRepository.GetAllAsync();
+
+            IndexViewModel indexModel = new IndexViewModel
+            {
+                Tasks = tasks.OrderBy(c => c.Deadline)
+                            .ToList(),
+                Categories = categories.ToList(),
+            };
+            return View("Index",indexModel);
         }
 
 

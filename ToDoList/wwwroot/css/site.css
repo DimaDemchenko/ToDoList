@@ -9,7 +9,7 @@ main {
 width: 100%;
 }
 form {
-    max-height: 85px;
+
 }
 
 body {
@@ -162,19 +162,18 @@ span{
 }
 
 .error-container {
-    background-color: #ffe7e7;
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
     width: 50%;
-    margin: auto;
+    margin: 20px;
     margin-top: 10px;
 }
 
 .error-text {
     display: block;
-    color: #111111;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 5px;
     font-family: Arial, Helvetica, sans-serif;
+    color: red;
 }
