@@ -7,7 +7,7 @@
 
 <!--Static button-->
 <div class="fixed-button-left">
-    <a href="/todo/history" class="button static-button">
+    <a href="/todo/index" class="button static-button">
         <i class="bi bi-arrow-left-short"></i>
     </a>
 </div>
@@ -28,13 +28,10 @@
                         <span>@item.Title</span>
                     </span>
                      <span class="deadline">
-                         @{
-                            TimeSpan? remainingTime = item.Deadline - DateTime.Now;
-                            string remainingTimeStr = string.Format("{0}d {1}h {2}m", remainingTime?.Days, remainingTime?.Hours,
-                            remainingTime?.Minutes);
-                           }
-
-                            @remainingTimeStr
+                               @{
+                                string deadline = item.Deadline != null ? item.Deadline.Value.ToString("g") : "";
+                               }                              
+                         @deadline
                       </span>
              </div>
                 <div class="buttons">
