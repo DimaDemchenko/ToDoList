@@ -9,11 +9,13 @@
 
 
 <!--Static button-->
-<div class="fixed-button">
-    <button id="phone-button" class="phone-button">
-        <i class="bi-telephone"></i>
-    </button>
+<div class="fixed-button-right">
+    <a href="/todo/history" class="button static-button">
+        <i class="bi bi-clock-history"></i>
+    </a>
 </div>
+
+<div class="container">
 
 @using (Html.BeginForm("AddTask", "ToDo", FormMethod.Post))
 {
@@ -79,3 +81,4 @@
     }
 </div>
 
+</div>
