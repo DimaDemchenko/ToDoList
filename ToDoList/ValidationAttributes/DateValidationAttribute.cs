@@ -2,7 +2,7 @@
 
 namespace ToDoList.ValidationAttributes
 {
-    public class DateValidationAttribute :ValidationAttribute
+    public class DateValidationAttribute : ValidationAttribute
     {
         public override bool IsValid(object? value)
         {

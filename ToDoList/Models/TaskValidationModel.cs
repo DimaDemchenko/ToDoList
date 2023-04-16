@@ -8,6 +8,7 @@ namespace ToDoList.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
+        [CategoryValidation(ErrorMessage = "Choose correct category!")]
         public int CategoryId { get; set; }
 
         [StringLength(30,ErrorMessage = "Title has to be more than 3 symbols", MinimumLength = 3)]
