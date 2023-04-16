@@ -4,6 +4,7 @@ using System.Diagnostics;
 using ToDoList.DBmodels;
 using ToDoList.Models;
 using ToDoList.Repository;
+using Task = System.Threading.Tasks.Task;
 
 namespace ToDoList.Controllers
 {
@@ -46,14 +47,17 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
-            var categories = await _categoriesRepository.GetAllAsync();
+            var tasks = _tasksRepository.GetAllByStatusAsync(false);
+            var categories = _categoriesRepository.GetAllAsync();
+
+            await Task.WhenAll(tasks, categories);
+
 
             IndexViewModel indexModel = new IndexViewModel
             {
-                Tasks = tasks.OrderBy(c => c.Deadline)
+                Tasks = tasks.Result.OrderBy(c => c.Deadline)
                             .ToList(), 
-                Categories = categories.ToList(),
+                Categories = categories.Result.ToList(),
             };
             return View(indexModel);
         }
@@ -86,14 +90,17 @@ namespace ToDoList.Controllers
                 return RedirectToAction("Index");
             }
 
-            var tasks = await _tasksRepository.GetAllByStatusAsync(false);
-            var categories = await _categoriesRepository.GetAllAsync();
+            var tasks = _tasksRepository.GetAllByStatusAsync(false);
+            var categories = _categoriesRepository.GetAllAsync();
+
+            await Task.WhenAll(tasks, categories);
+
 
             IndexViewModel indexModel = new IndexViewModel
             {
-                Tasks = tasks.OrderBy(c => c.Deadline)
+                Tasks = tasks.Result.OrderBy(c => c.Deadline)
                             .ToList(),
-                Categories = categories.ToList(),
+                Categories = categories.Result.ToList(),
             };
             return View("Index",indexModel);
         }
