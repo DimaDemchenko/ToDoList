@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ToDoList.Enum;
+using ToDoList.EnumData;
 
 namespace ToDoList.Models
 {

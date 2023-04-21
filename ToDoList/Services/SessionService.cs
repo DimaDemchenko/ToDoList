@@ -1,4 +1,5 @@
-﻿using ToDoList.Enum;
+﻿using ToDoList.EnumData;
+using System;
 
 namespace ToDoList.Services
 {
@@ -11,15 +12,19 @@ namespace ToDoList.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string Get(string key, string defaultValue = null)
+        public StorageType Get(string key, string storageType = null)
         {
             var value = _httpContextAccessor.HttpContext.Session.GetString(key);
+
             if (value == null)
             {
                 _httpContextAccessor.HttpContext.Session.SetString(key, StorageType.SQL.ToString());
+                value = _httpContextAccessor.HttpContext.Session.GetString(key);
             }
-            return value;
+
+            return (StorageType)Enum.Parse(typeof(StorageType), value);
         }
+    
 
         public void Set(string key, string value)
         {

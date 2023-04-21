@@ -1,4 +1,4 @@
-﻿@using ToDoList.Enum;
+﻿@using ToDoList.EnumData;
 @model IndexViewModel
 @{
     ViewData["Title"] = "To Do List";
@@ -8,11 +8,24 @@
 
 <header>
         <div class="header-container">
-            <form method="post" action="Change" class="storageChooser">
+            <form method="post" asp-controller="ToDo"  asp-action="Change" class="storageChooser">
                 <label>Choose storage:</label>
-                <select asp-for="StorageType.StorageType" name="StorageType.StorageType" class="storageInput">
+                <select asp-for="StorageTypeModel" name="StorageType" class="storageInput">
+                @if (Model.selectedType == StorageType.XML)
+                {
+                    <option value="@StorageType.XML" selected>XML</option>
                     <option value="@StorageType.SQL">SQL</option>
+                }
+                else if (Model.selectedType == StorageType.SQL)
+                {
+                    <option value="@StorageType.XML" >XML</option>
+                    <option value="@StorageType.SQL" selected>SQL</option>
+                }
+                else
+                {
                     <option value="@StorageType.XML">XML</option>
+                    <option value="@StorageType.SQL">SQL</option>
+                }
                 </select>
                 <button class="storageBtn" type="submit">Change</button>
             </form>

@@ -1,4 +1,4 @@
-﻿namespace ToDoList.Enum
+﻿namespace ToDoList.EnumData
 {
     public enum StorageType
     {

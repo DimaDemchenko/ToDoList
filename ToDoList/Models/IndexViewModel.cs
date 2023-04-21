@@ -1,4 +1,5 @@
 ﻿using ToDoList.DBmodels;
+using ToDoList.EnumData;
 
 namespace ToDoList.Models
 {
@@ -10,7 +11,9 @@ namespace ToDoList.Models
 
         public TaskValidationModel? TaskValidation { get; set; }
 
-        public StorageTypeModel? StorageType { get; set; }
+        public StorageTypeModel? StorageTypeModel { get; set; }
+
+        public StorageType selectedType { get; set; }
 
     }
 }
