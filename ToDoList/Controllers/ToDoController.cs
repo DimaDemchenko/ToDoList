@@ -52,11 +52,13 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> History() 
         {
             var tasks = await _tasksRepository.GetAllByStatusAsync(true);
+            var categories = await _categoriesRepository.GetAllAsync();
 
             HistoryViewModel indexModel = new HistoryViewModel
             {
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(),
+                Categories = categories.ToList(),
             };
             return View(indexModel);
         }
@@ -65,55 +67,37 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Index()
         {
             _storageType = _sessionService.Get("Storage");
-            
+
+            IEnumerable<DBmodels.Task> tasks;
+            IEnumerable<Category> categories;
+
+
             if (_storageType == StorageType.SQL)
             {
-                var tasks = await _tasksRepository.GetAllByStatusAsync(false);
-                var categories = await _categoriesRepository.GetAllAsync();
-
-
-
-                IndexViewModel indexModel = new IndexViewModel
-                {
-                    Tasks = tasks.OrderBy(c => c.Deadline)
-                               .ToList(),
-                    Categories = categories.ToList(),
-
-                    selectedType = _storageType
-                };
-
-                return View("Index", indexModel);
+                tasks = await _tasksRepository.GetAllByStatusAsync(false);
+                categories = await _categoriesRepository.GetAllAsync();
             }
             else if (_storageType == StorageType.XML)
             {
-                var tasks = await _xMLRepository.GetTasksAsync();
-                var categories = await _xMLRepository.GetCategoriesAsync();
+                tasks = await _xMLRepository.GetTasksAsync();
+                categories = await _xMLRepository.GetCategoriesAsync();
+            }
+            else
+            {
+                throw new Exception("Select storage!");
+            }
 
 
-                var categoryDictionary = categories.ToDictionary(c => c.Id);
+            IndexViewModel indexModel = new IndexViewModel
+            {
+                Tasks = tasks.OrderBy(c => c.Deadline)
+                             .ToList(),
+                Categories = categories.ToList(),
 
-                foreach (var task in tasks)
-                {
-                    if (categoryDictionary.TryGetValue(task.CategoryId, out var category))
-                    {
-                        task.Category = new Category { Id = category.Id, Name = category.Name };
-                    }
-                }
+                selectedType = _storageType
+            };
 
-
-                IndexViewModel indexModel = new IndexViewModel
-                {
-                    Tasks = tasks.OrderBy(c => c.Deadline)
-                               .ToList(),
-                    Categories = categories.ToList(),
-
-                    selectedType = _storageType
-                };
-
-                return View("Index", indexModel);
-            }   
-            
-            return RedirectToAction("Index");
+            return View("Index", indexModel);
 
         }
 

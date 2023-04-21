@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "History";
     
-
+    var categoryMap = Model.Categories.ToDictionary(c => c.Id, c => c.Name);
 }
 
 <!--Static button-->
@@ -24,7 +24,7 @@
         <div class="task">
             <div class="spans">
                     <span class="main">
-                        <span class="category">@item.Category.Name:</span>
+                            <span class="category">@categoryMap[item.CategoryId]:</span>
                         <span>@item.Title</span>
                     </span>
                      <span class="deadline">

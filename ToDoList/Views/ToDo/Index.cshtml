@@ -2,6 +2,8 @@
 @model IndexViewModel
 @{
     ViewData["Title"] = "To Do List";
+
+    var categoryMap = Model.Categories.ToDictionary(c => c.Id, c => c.Name);
 }
 
 
@@ -72,7 +74,7 @@
             <div class="task">
                 <div class="spans">
                     <span class="main">
-                        <span class="category">item.Category.Name:</span>
+                        <span class="category">@categoryMap[item.CategoryId]:</span>
                         <span>@item.Title</span>
                     </span>
                     <span class="deadline">
