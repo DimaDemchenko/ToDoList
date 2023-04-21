@@ -10,5 +10,7 @@ namespace ToDoList.Models
 
         public TaskValidationModel? TaskValidation { get; set; }
 
+        public StorageTypeModel? StorageType { get; set; }
+
     }
 }

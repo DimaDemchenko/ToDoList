@@ -1,11 +1,26 @@
-﻿@model IndexViewModel
+﻿@using ToDoList.Enum;
+@model IndexViewModel
 @{
     ViewData["Title"] = "To Do List";
 }
 
 
 
+<header>
+        <div class="header-container">
+            <form method="post" action="Change" class="storageChooser">
+                <label>Choose storage:</label>
+                <select asp-for="StorageType.StorageType" name="StorageType.StorageType" class="storageInput">
+                    <option value="@StorageType.SQL">SQL</option>
+                    <option value="@StorageType.XML">XML</option>
+                </select>
+                <button class="storageBtn" type="submit">Change</button>
+            </form>
+        </div>
+    </header>
 
+
+<main>
 <!--Static button-->
 <div class="fixed-button-right">
     <a href="/todo/history" class="button static-button">
@@ -80,3 +95,4 @@
 </div>
 
 </div>
+</main>

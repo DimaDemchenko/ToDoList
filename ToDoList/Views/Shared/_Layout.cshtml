@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using ToDoList.Enum;
+@using ToDoList.Models;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,21 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 </head>
 
-<body>
-    <header>
-        <div class="header-container">
-            <form class="storageChooser">
-                <label>Choose storage:</label>
-                <select class="storageInput">
-                    <option>SQL</option>
-                    <option>XML</option>
-                </select>
-                <button class="storageBtn" type="submit">Change</button>
-            </form>
-        </div>
-    </header>
-        <main>
+<body>        
             @RenderBody()
-        </main>
 </body>
 </html>
