@@ -46,16 +46,9 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT * FROM Tasks JOIN Categories ON Tasks.category_id = Categories.id";
+                string query = "SELECT Id, category_id AS CategoryId, title, deadline, is_completed as IsCompleted  FROM Tasks ";
 
-                var tasks = await _connection.QueryAsync<DBmodels.Task, Category, DBmodels.Task>(query,
-
-                    (task, category) =>
-                    {
-                        task.Category = category;
-                        return task;
-                    },
-                    splitOn: "Id");
+                var tasks = await _connection.QueryAsync<DBmodels.Task>(query);
                 return tasks;
             }
             catch (Exception ex)
@@ -68,16 +61,10 @@ namespace ToDoList.Repository
         {
             try
             {
-                string query = "SELECT * FROM Tasks JOIN Categories ON Tasks.category_id = Categories.id WHERE is_completed = @IsCompleted";
+                string query = "SELECT Id, category_id AS CategoryId, title, deadline, is_completed as IsCompleted FROM Tasks  WHERE is_completed = @IsCompleted";
 
-                var tasks = await _connection.QueryAsync<DBmodels.Task, Category, DBmodels.Task>(query,
+                var tasks = await _connection.QueryAsync<DBmodels.Task>(query, new { IsCompleted });
 
-                    (task, category) =>
-                    {
-                        task.Category = category;
-                        return task;
-                    },new { IsCompleted },
-                    splitOn: "Id");
                 return tasks;
             }
             catch (Exception ex)

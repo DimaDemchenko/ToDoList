@@ -7,6 +7,7 @@ using ToDoList.Repository;
 using ToDoList.Services;
 using ToDoList.EnumData;
 using Task = System.Threading.Tasks.Task;
+using System.Threading.Tasks;
 
 namespace ToDoList.Controllers
 {
@@ -64,31 +65,55 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Index()
         {
             _storageType = _sessionService.Get("Storage");
+            
             if (_storageType == StorageType.SQL)
             {
-                var tasks = _tasksRepository.GetAllByStatusAsync(false);
-                var categories = _categoriesRepository.GetAllAsync();
+                var tasks = await _tasksRepository.GetAllByStatusAsync(false);
+                var categories = await _categoriesRepository.GetAllAsync();
 
-                await Task.WhenAll(tasks, categories);
 
 
                 IndexViewModel indexModel = new IndexViewModel
                 {
-                    Tasks = tasks.Result.OrderBy(c => c.Deadline)
-                                .ToList(),
-                    Categories = categories.Result.ToList(),
+                    Tasks = tasks.OrderBy(c => c.Deadline)
+                               .ToList(),
+                    Categories = categories.ToList(),
 
                     selectedType = _storageType
                 };
-                return View(indexModel);
+
+                return View("Index", indexModel);
             }
             else if (_storageType == StorageType.XML)
             {
-                var tasks = _xMLRepository.GetTasksAsync();
-                var categories = _xMLRepository.GetCategoriesAsync();
+                var tasks = await _xMLRepository.GetTasksAsync();
+                var categories = await _xMLRepository.GetCategoriesAsync();
 
-                await Task.WhenAll(tasks, categories);
-            }
+
+                var categoryDictionary = categories.ToDictionary(c => c.Id);
+
+                foreach (var task in tasks)
+                {
+                    if (categoryDictionary.TryGetValue(task.CategoryId, out var category))
+                    {
+                        task.Category = new Category { Id = category.Id, Name = category.Name };
+                    }
+                }
+
+
+                IndexViewModel indexModel = new IndexViewModel
+                {
+                    Tasks = tasks.OrderBy(c => c.Deadline)
+                               .ToList(),
+                    Categories = categories.ToList(),
+
+                    selectedType = _storageType
+                };
+
+                return View("Index", indexModel);
+            }   
+            
+            return RedirectToAction("Index");
 
         }
 

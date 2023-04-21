@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using Microsoft.Extensions.Options;
+using System.Xml.Linq;
 using ToDoList.DBmodels;
 using TaskDB = ToDoList.DBmodels.Task;
 using TaskThread = System.Threading.Tasks.Task;
@@ -10,8 +11,9 @@ namespace ToDoList.Repository
         private readonly XDocument _document;
         private readonly string _path;
 
-        public XMLRepository(string filePath)
+        public XMLRepository()
         {
+            string filePath = "C:\\Users\\08092\\source\\repos\\TODOLIST\\ToDoList\\XMLStorage\\XMLStorage.xml"; // test
             _document = XDocument.Load(filePath);
             _path = filePath;
         }
