@@ -10,6 +10,18 @@
 </head>
 
 <body>
+    <header>
+        <div class="header-container">
+            <form class="storageChooser">
+                <label>Choose storage:</label>
+                <select class="storageInput">
+                    <option>SQL</option>
+                    <option>XML</option>
+                </select>
+                <button class="storageBtn" type="submit">Change</button>
+            </form>
+        </div>
+    </header>
         <main>
             @RenderBody()
         </main>
