@@ -1,0 +1,54 @@
+﻿<taskList>
+	<categories>
+		<category>
+			<id>1</id>
+			<name>Home</name>
+		</category>
+		<category>
+			<id>2</id>
+			<name>Business</name>
+		</category>
+		<category>
+			<id>3</id>
+			<name>Study</name>
+		</category>
+		<category>
+			<id>4</id>
+			<name>Hobby</name>
+		</category>
+		<category>
+			<id>5</id>
+			<name>Work</name>
+		</category>
+	</categories>
+	<tasks>
+		<task>
+			<id>1</id>
+			<categoryId>1</categoryId>
+			<title>Task 1</title>
+			<deadline>2023-05-01T00:00:00</deadline>
+			<isCompleted>false</isCompleted>
+		</task>
+		<task>
+			<id>2</id>
+			<categoryId>1</categoryId>
+			<title>Task 2</title>
+			<deadline>2023-05-10T00:00:00</deadline>
+			<isCompleted>false</isCompleted>
+		</task>
+		<task>
+			<id>3</id>
+			<categoryId>2</categoryId>
+			<title>Task 3</title>
+			<deadline>2023-05-05T00:00:00</deadline>
+			<isCompleted>False</isCompleted>
+		</task>
+		<task>
+			<id>7</id>
+			<categoryId>3</categoryId>
+			<title>tASK1213</title>
+			<deadline>2023-04-20T23:05:45.9037848+03:00</deadline>
+			<isCompleted>false</isCompleted>
+		</task>
+	</tasks>
+</taskList>

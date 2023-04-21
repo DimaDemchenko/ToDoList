@@ -107,6 +107,7 @@ namespace ToDoList.Controllers
                 return RedirectToAction("Index");
             }
 
+            _storageType = _sessionService.Get("Storage");
             var tasks = _tasksRepository.GetAllByStatusAsync(false);
             var categories = _categoriesRepository.GetAllAsync();
 
