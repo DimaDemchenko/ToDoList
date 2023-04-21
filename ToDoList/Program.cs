@@ -15,6 +15,7 @@ new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")
 
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+builder.Services.AddScoped<XMLRepository>();
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 builder.Services.AddSession(options =>
 {

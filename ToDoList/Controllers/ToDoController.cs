@@ -17,14 +17,16 @@ namespace ToDoList.Controllers
         private readonly ICategoriesRepository _categoriesRepository;
         private readonly IMapper _mapper;
         private readonly SessionService _sessionService;
+        private readonly XMLRepository _xMLRepository;
         private StorageType _storageType;
-        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, SessionService sessionService)
+        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, SessionService sessionService, XMLRepository xMLRepository)
         {
             _logger = logger;
             _tasksRepository = tasksRepository;
             _categoriesRepository = categoriesRepository;
             _mapper = mapper;
             _sessionService = sessionService;
+            _xMLRepository = xMLRepository;
         }
 
         [HttpPost]
@@ -62,21 +64,32 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Index()
         {
             _storageType = _sessionService.Get("Storage");
-            var tasks = _tasksRepository.GetAllByStatusAsync(false);
-            var categories = _categoriesRepository.GetAllAsync();
-
-            await Task.WhenAll(tasks, categories);
-
-
-            IndexViewModel indexModel = new IndexViewModel
+            if (_storageType == StorageType.SQL)
             {
-                Tasks = tasks.Result.OrderBy(c => c.Deadline)
-                            .ToList(),
-                Categories = categories.Result.ToList(),
+                var tasks = _tasksRepository.GetAllByStatusAsync(false);
+                var categories = _categoriesRepository.GetAllAsync();
 
-                selectedType = _storageType
-            };
-            return View(indexModel);
+                await Task.WhenAll(tasks, categories);
+
+
+                IndexViewModel indexModel = new IndexViewModel
+                {
+                    Tasks = tasks.Result.OrderBy(c => c.Deadline)
+                                .ToList(),
+                    Categories = categories.Result.ToList(),
+
+                    selectedType = _storageType
+                };
+                return View(indexModel);
+            }
+            else if (_storageType == StorageType.XML)
+            {
+                var tasks = _xMLRepository.GetTasksAsync();
+                var categories = _xMLRepository.GetCategoriesAsync();
+
+                await Task.WhenAll(tasks, categories);
+            }
+
         }
 
         [HttpGet]
