@@ -20,6 +20,7 @@ namespace ToDoList.Controllers
         private readonly SessionService _sessionService;
         private readonly XMLRepository _xMLRepository;
         private StorageType _storageType;
+
         public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, SessionService sessionService, XMLRepository xMLRepository)
         {
             _logger = logger;
@@ -41,6 +42,7 @@ namespace ToDoList.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+
         public async  Task<IActionResult> Recover(int id) 
         {
             await _tasksRepository.UpdateStatusAsync(id, false);
