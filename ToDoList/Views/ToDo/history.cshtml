@@ -1,10 +1,43 @@
 ﻿@model HistoryViewModel
+@using ToDoList.EnumData;
 @{
     ViewData["Title"] = "History";
     
     var categoryMap = Model.Categories.ToDictionary(c => c.Id, c => c.Name);
 }
 
+
+
+
+
+
+<header>
+    <div class="header-container">
+        <form method="post" asp-controller="ToDo" asp-action="Change" class="storageChooser">
+            <label>Choose storage:</label>
+            <select asp-for="StorageTypeModel" name="StorageType" class="storageInput">
+                @if (Model.selectedType == StorageType.XML)
+                {
+                    <option value="@StorageType.XML" selected>XML</option>
+                    <option value="@StorageType.SQL">SQL</option>
+                }
+                else if (Model.selectedType == StorageType.SQL)
+                {
+                    <option value="@StorageType.XML">XML</option>
+                    <option value="@StorageType.SQL" selected>SQL</option>
+                }
+                else
+                {
+                    <option value="@StorageType.XML">XML</option>
+                    <option value="@StorageType.SQL">SQL</option>
+                }
+            </select>
+            <button class="storageBtn" type="submit">Change</button>
+        </form>
+    </div>
+</header>
+
+<main>
 <!--Static button-->
 <div class="fixed-button-left">
     <a href="/todo/index" class="button static-button">
@@ -53,3 +86,4 @@
     }
     </div>
 </div>
+</main>

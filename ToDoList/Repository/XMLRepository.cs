@@ -49,6 +49,23 @@ namespace ToDoList.Repository
             );
         }
 
+        public async Task<IEnumerable<TaskDB>> GetTasksByStatusAsync(bool status)
+        {
+            return await TaskThread.Run(() =>
+                _document.Root
+                    .Element("tasks")
+                    .Elements("task").Where(t => (bool)t.Element("isCompleted") == status)
+                    .Select(t => new TaskDB
+                    {
+                        Id = (int)t.Element("id"),
+                        CategoryId = (int)t.Element("categoryId"),
+                        Title = (string)t.Element("title"),
+                        Deadline = (DateTime?)t.Element("deadline"),
+                        IsCompleted = (bool)t.Element("isCompleted")
+                    })
+            );
+        }
+
         public async Task<TaskDB> GetTaskByIdAsync(int id)
         {
             return await TaskThread.Run(() =>
