@@ -99,7 +99,7 @@ namespace ToDoList.Repository
             await TaskThread.Run(()=> _document.Save(_path));
         }
 
-        public async TaskThread UpdateTaskAsync(int id, bool status)
+        public async TaskThread UpdateTaskStatusAsync(int id, bool status)
         {
             XElement taskElement = _document.Root
                 .Element("tasks")

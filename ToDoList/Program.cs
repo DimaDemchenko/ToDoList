@@ -18,7 +18,7 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<CookiesService>();
+builder.Services.AddSingleton<CookieService>();
 builder.Services.AddTransient<IDbConnection>((sp) =>
 new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 

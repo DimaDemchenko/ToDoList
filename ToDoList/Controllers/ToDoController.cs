@@ -17,11 +17,11 @@ namespace ToDoList.Controllers
         private readonly ITasksRepository _tasksRepository;
         private readonly ICategoriesRepository _categoriesRepository;
         private readonly IMapper _mapper;
-        private readonly CookiesService _cookiesService;
+        private readonly CookieService _cookiesService;
         private readonly XMLRepository _xMLRepository;
         private StorageType _storageType;
 
-        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, CookiesService sessionService, XMLRepository xMLRepository)
+        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, CookieService sessionService, XMLRepository xMLRepository)
         {
             _logger = logger;
             _tasksRepository = tasksRepository;
@@ -51,7 +51,7 @@ namespace ToDoList.Controllers
             if (_storageType == StorageType.SQL)
                 await _tasksRepository.UpdateStatusAsync(id, false);
             else if(_storageType == StorageType.XML)
-                await _xMLRepository.UpdateTaskAsync(id, false);
+                await _xMLRepository.UpdateTaskStatusAsync(id, false);
 
             return RedirectToAction("Index");
         }
@@ -138,7 +138,7 @@ namespace ToDoList.Controllers
             if (_storageType == StorageType.SQL)
                 await _tasksRepository.UpdateStatusAsync(id, true);
             else if(_storageType == StorageType.XML)
-                await _xMLRepository.UpdateTaskAsync(id, true);
+                await _xMLRepository.UpdateTaskStatusAsync(id, true);
 
             return RedirectToAction("Index");
         }

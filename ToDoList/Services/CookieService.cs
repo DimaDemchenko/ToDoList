@@ -3,11 +3,11 @@ using System;
 
 namespace ToDoList.Services
 {
-    public class CookiesService
+    public class CookieService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CookiesService(IHttpContextAccessor httpContextAccessor)
+        public CookieService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
