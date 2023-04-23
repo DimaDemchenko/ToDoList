@@ -31,18 +31,11 @@
       <isCompleted>false</isCompleted>
     </task>
     <task>
-      <id>2</id>
-      <categoryId>1</categoryId>
-      <title>Task 2</title>
-      <deadline>2023-05-10T00:00:00</deadline>
-      <isCompleted>false</isCompleted>
-    </task>
-    <task>
       <id>3</id>
       <categoryId>2</categoryId>
       <title>Task 3</title>
       <deadline>2023-05-05T00:00:00</deadline>
-      <isCompleted>False</isCompleted>
+      <isCompleted>True</isCompleted>
     </task>
     <task>
       <id>9353</id>
@@ -57,6 +50,13 @@
       <title>NewTask</title>
       <deadline>2023-04-23T16:33:00</deadline>
       <isCompleted>True</isCompleted>
+    </task>
+    <task>
+      <id>4847</id>
+      <categoryId>3</categoryId>
+      <title>To do node.js</title>
+      <deadline>2023-04-25T09:50:00</deadline>
+      <isCompleted>false</isCompleted>
     </task>
   </tasks>
 </taskList>

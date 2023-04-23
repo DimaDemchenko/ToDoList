@@ -18,17 +18,16 @@ namespace ToDoList.Controllers
         private readonly ICategoriesRepository _categoriesRepository;
         private readonly IMapper _mapper;
         private readonly CookieService _cookiesService;
-        private readonly XMLRepository _xMLRepository;
-        private StorageType _storageType;
+        private readonly DataService _dataService;
 
-        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, CookieService sessionService, XMLRepository xMLRepository)
+        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, CookieService sessionService, DataService dataService)
         {
             _logger = logger;
             _tasksRepository = tasksRepository;
             _categoriesRepository = categoriesRepository;
             _mapper = mapper;
             _cookiesService = sessionService;
-            _xMLRepository = xMLRepository;
+            _dataService = dataService;
         }
 
         [HttpPost]
@@ -37,7 +36,6 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 _cookiesService.Set("Storage", storageTypeModel.StorageType.ToString());
-                _storageType = _cookiesService.Get("Storage");
             }
 
             return RedirectToAction("Index");
@@ -46,12 +44,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async  Task<IActionResult> Recover(int id) 
         {
-            _storageType = _cookiesService.Get("Storage");
-
-            if (_storageType == StorageType.SQL)
-                await _tasksRepository.UpdateStatusAsync(id, false);
-            else if(_storageType == StorageType.XML)
-                await _xMLRepository.UpdateTaskStatusAsync(id, false);
+            await _dataService.UpdateTaskStatusAsync(id, false);
 
             return RedirectToAction("Index");
         }
@@ -59,73 +52,25 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> History() 
         {
-            _storageType = _cookiesService.Get("Storage");
+            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(true);
+            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
 
-            IEnumerable<DBmodels.Task> tasks;
-            IEnumerable<Category> categories;
-
-            if (_storageType == StorageType.SQL)
-            {
-                tasks = await _tasksRepository.GetAllByStatusAsync(true);
-                categories = await _categoriesRepository.GetAllAsync();
-            }
-            else if (_storageType == StorageType.XML)
-            {
-                tasks = await _xMLRepository.GetTasksByStatusAsync(true);
-                categories = await _xMLRepository.GetCategoriesAsync();
-            }
-            else
-            {
-                throw new Exception("Select storage!");
-            }
-
-            HistoryViewModel indexModel = new HistoryViewModel
-            {
-                Tasks = tasks.OrderBy(c => c.Deadline)
-                            .ToList(),
-                Categories = categories.ToList(),
-                selectedType = _storageType
-            };
-            return View(indexModel);
+            return View(CreateHistoryViewModel(tasks, categories));
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            _storageType= _cookiesService.Get("Storage");
-
-            IEnumerable<DBmodels.Task> tasks;
-            IEnumerable<Category> categories;
-
-
-            if (_storageType == StorageType.SQL)
-            {
-                tasks = await _tasksRepository.GetAllByStatusAsync(false);
-                categories = await _categoriesRepository.GetAllAsync();
-            }
-            else if (_storageType == StorageType.XML)
-            {
-                tasks = await _xMLRepository.GetTasksByStatusAsync(false);
-                categories = await _xMLRepository.GetCategoriesAsync();
-            }
-            else
-            {
-                throw new Exception("Select storage!");
-            }
+            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(false);
+            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
-
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            _storageType = _cookiesService.Get("Storage");
-
-            if (_storageType == StorageType.SQL)
-                await _tasksRepository.DeleteAsync(id);
-            else if (_storageType == StorageType.XML)
-                await _xMLRepository.DeleteTaskByIdAsync(id);
+            await _dataService.DeleteTaskAsync(id);
 
             return RedirectToAction("Index"); 
         }
@@ -133,12 +78,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
-            _storageType = _cookiesService.Get("Storage");
-
-            if (_storageType == StorageType.SQL)
-                await _tasksRepository.UpdateStatusAsync(id, true);
-            else if(_storageType == StorageType.XML)
-                await _xMLRepository.UpdateTaskStatusAsync(id, true);
+            await _dataService.UpdateTaskStatusAsync(id, true);
 
             return RedirectToAction("Index");
         }
@@ -146,41 +86,18 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
-            _storageType = _cookiesService.Get("Storage");
 
             if (ModelState.IsValid)
             {
                 var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
-                if (_storageType == StorageType.SQL)
-                    await _tasksRepository.CreateAsync(task);
-                else if (_storageType == StorageType.XML)
-                { 
-                    Random rnd= new Random();
-                    do
-                    {
-                        task.Id = rnd.Next(0, 20000);
-                    } while (await _xMLRepository.GetTaskByIdAsync(task.Id) != null);
-
-                    await _xMLRepository.CreateTaskAsync(task);
-                }
+                await _dataService.CreateTaskAsync(task);
 
                 return RedirectToAction("Index");
             }
 
-            IEnumerable<DBmodels.Task> tasks = null;
-            IEnumerable<Category> categories = null;
-
-            if (_storageType == StorageType.SQL)
-            {
-                tasks = await _tasksRepository.GetAllByStatusAsync(false);
-                categories = await _categoriesRepository.GetAllAsync();
-            }
-            else if (_storageType == StorageType.XML)
-            { 
-                tasks = await _xMLRepository.GetTasksByStatusAsync(false);
-                categories = await _xMLRepository.GetCategoriesAsync();
-            }
+            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(false);
+            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
         }
@@ -191,9 +108,22 @@ namespace ToDoList.Controllers
             {
                 Tasks = tasks.OrderBy(c => c.Deadline).ToList(),
                 Categories = categories.ToList(),
-                selectedType = _storageType
+                selectedType = _cookiesService.Get("Storage")
             };
             return indexModel;
+        }
+
+        private HistoryViewModel CreateHistoryViewModel(IEnumerable<DBmodels.Task> tasks, IEnumerable<Category> categories)
+        {
+            HistoryViewModel historyModel = new HistoryViewModel
+            {
+                Tasks = tasks.OrderBy(c => c.Deadline)
+                            .ToList(),
+                Categories = categories.ToList(),
+                selectedType = _cookiesService.Get("Storage")
+            };
+
+            return historyModel;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

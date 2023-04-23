@@ -85,6 +85,13 @@ namespace ToDoList.Services
             }
             else if (_storageType == StorageType.XML)
             {
+                Random rnd = new Random();
+
+                do
+                {
+                    task.Id = rnd.Next(0, 20000);
+                } while (await _xMLRepository.GetTaskByIdAsync(task.Id) != null);
+
                 await _xMLRepository.CreateTaskAsync(task);
             }
         }
