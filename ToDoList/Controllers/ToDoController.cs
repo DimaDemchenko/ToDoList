@@ -37,6 +37,7 @@ namespace ToDoList.Controllers
             if (ModelState.IsValid)
             {
                 _cookiesService.Set("Storage", storageTypeModel.StorageType.ToString());
+                _storageType = _cookiesService.Get("Storage");
             }
 
             return RedirectToAction("Index");
@@ -47,7 +48,7 @@ namespace ToDoList.Controllers
         {
             _storageType = _cookiesService.Get("Storage");
 
-            if(_storageType == StorageType.SQL)
+            if (_storageType == StorageType.SQL)
                 await _tasksRepository.UpdateStatusAsync(id, false);
             else if(_storageType == StorageType.XML)
                 await _xMLRepository.UpdateTaskAsync(id, false);
@@ -91,7 +92,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            _storageType = _cookiesService.Get("Storage");
+            _storageType= _cookiesService.Get("Storage");
 
             IEnumerable<DBmodels.Task> tasks;
             IEnumerable<Category> categories;
@@ -121,7 +122,7 @@ namespace ToDoList.Controllers
         {
             _storageType = _cookiesService.Get("Storage");
 
-            if(_storageType == StorageType.SQL)
+            if (_storageType == StorageType.SQL)
                 await _tasksRepository.DeleteAsync(id);
             else if (_storageType == StorageType.XML)
                 await _xMLRepository.DeleteTaskByIdAsync(id);
@@ -134,7 +135,7 @@ namespace ToDoList.Controllers
         {
             _storageType = _cookiesService.Get("Storage");
 
-            if(_storageType == StorageType.SQL)
+            if (_storageType == StorageType.SQL)
                 await _tasksRepository.UpdateStatusAsync(id, true);
             else if(_storageType == StorageType.XML)
                 await _xMLRepository.UpdateTaskAsync(id, true);

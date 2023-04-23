@@ -28,7 +28,7 @@ namespace ToDoList.Services
                 value = StorageType.SQL.ToString();
                 _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, options);
             }
-            Console.WriteLine(value);
+
             return (StorageType)Enum.Parse(typeof(StorageType), value);
         }
 

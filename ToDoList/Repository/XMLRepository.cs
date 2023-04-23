@@ -11,9 +11,9 @@ namespace ToDoList.Repository
         private readonly XDocument _document;
         private readonly string _path;
 
-        public XMLRepository()
+        public XMLRepository(IConfiguration config)
         {
-            string filePath = "C:\\Users\\08092\\source\\repos\\TODOLIST\\ToDoList\\XMLStorage\\XMLStorage.xml"; // test
+            var filePath = config.GetValue<string>("StorageSettings:XmlFilePath");
             _document = XDocument.Load(filePath);
             _path = filePath;
         }
