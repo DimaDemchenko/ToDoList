@@ -22,10 +22,6 @@ builder.Services.AddSingleton<CookieService>();
 builder.Services.AddTransient<IDbConnection>((sp) =>
 new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-builder.Services.AddScoped<ITasksRepository, TasksRepository>();
-builder.Services.AddScoped<XMLRepository>();
-builder.Services.AddScoped<DataService>();
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 var app = builder.Build();
