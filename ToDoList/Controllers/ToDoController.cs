@@ -14,20 +14,16 @@ namespace ToDoList.Controllers
     public class ToDoController : Controller
     {
         private readonly ILogger<ToDoController> _logger;
-        private readonly ITasksRepository _tasksRepository;
-        private readonly ICategoriesRepository _categoriesRepository;
         private readonly IMapper _mapper;
         private readonly CookieService _cookiesService;
-        private readonly DataService _dataService;
+        private readonly TaskProvider _provider;
 
-        public ToDoController(ILogger<ToDoController> logger, ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IMapper mapper, CookieService sessionService, DataService dataService)
+        public ToDoController(ILogger<ToDoController> logger, IMapper mapper, CookieService sessionService, TaskProvider provider)
         {
             _logger = logger;
-            _tasksRepository = tasksRepository;
-            _categoriesRepository = categoriesRepository;
             _mapper = mapper;
             _cookiesService = sessionService;
-            _dataService = dataService;
+            _provider = provider;
         }
 
         [HttpPost]
@@ -44,7 +40,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async  Task<IActionResult> Recover(int id) 
         {
-            await _dataService.UpdateTaskStatusAsync(id, false);
+            await _provider.GetTaskRepository().UpdateStatusAsync(id, false);
 
             return RedirectToAction("Index");
         }
@@ -52,8 +48,8 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> History() 
         {
-            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(true);
-            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(true);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
 
             return View(CreateHistoryViewModel(tasks, categories));
         }
@@ -61,8 +57,8 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(false);
-            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(false);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
         }
@@ -70,7 +66,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _dataService.DeleteTaskAsync(id);
+            await _provider.GetTaskRepository().DeleteAsync(id);
 
             return RedirectToAction("Index"); 
         }
@@ -78,7 +74,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
-            await _dataService.UpdateTaskStatusAsync(id, true);
+            await _provider.GetTaskRepository().UpdateStatusAsync(id, true);
 
             return RedirectToAction("Index");
         }
@@ -91,13 +87,13 @@ namespace ToDoList.Controllers
             {
                 var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
-                await _dataService.CreateTaskAsync(task);
+                await _provider.GetTaskRepository().CreateAsync(task);
 
                 return RedirectToAction("Index");
             }
 
-            IEnumerable<DBmodels.Task> tasks = await _dataService.GetAllTasksByStatusAsync(false);
-            IEnumerable<Category> categories = await _dataService.GetAllCategoriesAsync();
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(false);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
         }

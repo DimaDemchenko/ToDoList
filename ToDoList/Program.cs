@@ -21,7 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<CookieService>();
 builder.Services.AddTransient<IDbConnection>((sp) =>
 new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddScoped<TaskProvider>();
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 var app = builder.Build();
