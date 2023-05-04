@@ -4,7 +4,9 @@ using System.Data.SqlClient;
 using ToDoList.AutoMapper;
 using ToDoList.Repository;
 using ToDoList.Services;
+using GraphQL.DI;
 using GraphQL;
+using ToDoList.GraphQL.Schemes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +24,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<CookieService>();
 builder.Services.AddTransient<IDbConnection>((sp) =>
 new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<TaskProvider>();
+builder.Services.AddSingleton<TaskProvider>();
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddGraphQL((options) =>
 {
-    options.AddSchema<TaskSchema>();
+    options.AddSchema<TaskScheme>();
     options.AddGraphTypes();
     options.AddErrorInfoProvider(e => e.ExposeExceptionDetails = true);
     options.AddSystemTextJson();
@@ -56,7 +58,7 @@ app.MapControllerRoute(
     pattern: "{controller=ToDo}/{action=Index}/{id?}");
 
 
-
+app.UseGraphQL();
 app.UseGraphQLAltair();
 
 app.Run();
