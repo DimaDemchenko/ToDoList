@@ -11,7 +11,7 @@ namespace ToDoList.GraphQL.Queries
         public TaskQuery(TaskProvider provider)
         {
             FieldAsync<ListGraphType<TaskType>>(
-                "Tasks",
+                "tasks",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<BooleanGraphType>>
                 {
                     Name = "status",
