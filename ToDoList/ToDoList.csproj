@@ -10,6 +10,8 @@
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="GraphQL" Version="7.4.1" />
+    <PackageReference Include="GraphQL.Server.Ui.Altair" Version="7.4.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
