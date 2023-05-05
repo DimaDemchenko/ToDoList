@@ -1,11 +1,11 @@
 ﻿using GraphQL;
 using GraphQL.Types;
-using ToDoList.GraphQL.GraphQLTypes;
+using ToDoList.GraphQL.GraphQLTypes.TaskTypes;
 using ToDoList.Services;
 
 namespace ToDoList.GraphQL.Queries
 {
-    public class TaskQuery:ObjectGraphType
+    public class TaskQuery: ObjectGraphType
     {
 
         public TaskQuery(TaskProvider provider)
@@ -21,6 +21,14 @@ namespace ToDoList.GraphQL.Queries
                 {
                     bool status = context.GetArgument<bool>("status");
                     var tasks = await provider.GetTaskRepository().GetAllByStatusAsync(status);
+                    return tasks;
+                });
+
+            FieldAsync<ListGraphType<TaskType>>(
+                "allTasks",
+                resolve: async context =>
+                {
+                    var tasks = await provider.GetTaskRepository().GetAllAsync();
                     return tasks;
                 });
         }

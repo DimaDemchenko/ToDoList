@@ -1,6 +1,8 @@
 ﻿using GraphQL;
 using GraphQL.Types;
-using ToDoList.GraphQL.GraphQLTypes;
+using ToDoList.EnumData;
+using ToDoList.GraphQL.GraphQLTypes.StorageTypes;
+using ToDoList.GraphQL.GraphQLTypes.TaskTypes;
 using ToDoList.Services;
 
 namespace ToDoList.GraphQL.Mutations
@@ -8,7 +10,7 @@ namespace ToDoList.GraphQL.Mutations
     public class TaskMutation : ObjectGraphType
     {
         //refactor this method
-        public TaskMutation(TaskProvider provider)
+        public TaskMutation(TaskProvider provider, CookieService service)
         {
             FieldAsync<TaskType>("createTask",
                 arguments: new QueryArguments(
@@ -30,7 +32,7 @@ namespace ToDoList.GraphQL.Mutations
                 {
                     Name = "Id"
                 }, new QueryArgument<NonNullGraphType<BooleanGraphType>>()
-                { 
+                {
                     Name = "Status"
                 }
                 ), resolve: async context =>
@@ -43,6 +45,44 @@ namespace ToDoList.GraphQL.Mutations
                     return id;
                 }
                 );
+
+            FieldAsync<BooleanGraphType>("deleteTask", arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<IntGraphType>>()
+                {
+                    Name = "Id"
+                }
+                ), resolve: async context =>
+                {
+                    int id = context.GetArgument<int>("Id");
+
+                    await provider.GetTaskRepository().DeleteAsync(id);
+
+                    return true;
+                }
+                );
+
+            FieldAsync<BooleanGraphType>("changeStorageType",
+                    arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StorageTypeEnum>>()
+                    {
+                        Name = "storageType"
+                        }
+                    ),
+                resolve: async context =>
+                {
+                    StorageType storageType = context.GetArgument<StorageType>("storageType");
+
+                    if (storageType == StorageType.XML)
+                    {
+                        service.Set("Storage", StorageType.XML.ToString());
+                    }
+                    else
+                    {
+                        service.Set("Storage", StorageType.SQL.ToString());
+                    }
+
+                    return true;
+                });
         }
 
 

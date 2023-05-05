@@ -1,10 +1,11 @@
 ﻿using GraphQL.Types;
 
-namespace ToDoList.GraphQL.GraphQLTypes
+namespace ToDoList.GraphQL.GraphQLTypes.TaskTypes
 {
     public class TaskUpdateType : ObjectGraphType<DBmodels.Task>
     {
-        public TaskUpdateType() {
+        public TaskUpdateType()
+        {
             Name = "TaskUpdateStatus";
 
             Field(x => x.Id, nullable: false, typeof(IntGraphType));
