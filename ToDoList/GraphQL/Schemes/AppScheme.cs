@@ -9,8 +9,7 @@ namespace ToDoList.GraphQL.Schemes
         public AppScheme(IServiceProvider provider) : base(provider)
         {
             Query = provider.GetRequiredService<TaskQuery>();
-            Mutation = provider.GetRequiredService<TaskMutation>();
-
+            Mutation = provider.GetRequiredService<TaskMutation>(); 
         }
     }
 }

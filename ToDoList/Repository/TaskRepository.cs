@@ -31,14 +31,16 @@ namespace ToDoList.Repository
             }
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task<bool> DeleteAsync(int id)
         {
             try
             {
                 string query = "DELETE FROM Tasks WHERE Id = @id";
-                await _connection.ExecuteAsync(query, new { id });
+                var affectedRows = await _connection.ExecuteAsync(query, new { id });
+
+                return affectedRows > 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -49,8 +51,8 @@ namespace ToDoList.Repository
             try
             {
                 string query = "SELECT Id, category_id AS CategoryId, title, deadline, is_completed as IsCompleted  FROM Tasks ";
-
                 var tasks = await _connection.QueryAsync<DBmodels.Task>(query);
+
                 return tasks;
             }
             catch (Exception ex)
@@ -75,15 +77,16 @@ namespace ToDoList.Repository
             }
         }
 
-        public async System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted)
+        public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(int id, bool IsCompleted)
         {
             try
             {
                 string query = @"UPDATE Tasks
                          SET is_completed = @IsCompleted
                          WHERE Id = @id";
-                await _connection.ExecuteAsync(query, new { id, IsCompleted });
-               
+                var affectedRows = await _connection.ExecuteAsync(query, new { id, IsCompleted });
+
+                return affectedRows > 0;
             }
             catch (Exception ex)
             {

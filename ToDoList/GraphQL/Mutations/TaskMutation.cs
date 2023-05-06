@@ -24,7 +24,7 @@ namespace ToDoList.GraphQL.Mutations
 
                 );
 
-            FieldAsync<IntGraphType>("updateStatusTask", arguments: new QueryArguments(
+            FieldAsync<BooleanGraphType>("updateStatusTask", arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<IntGraphType>>()
                 {
                     Name = "Id"
@@ -37,9 +37,7 @@ namespace ToDoList.GraphQL.Mutations
                     int id = context.GetArgument<int>("Id");
                     bool status = context.GetArgument<bool>("status");
 
-                    await provider.GetTaskRepository().UpdateStatusAsync(id, status);
-
-                    return id;
+                    return await provider.GetTaskRepository().UpdateStatusAsync(id, status);
                 }
                 );
 
@@ -52,18 +50,17 @@ namespace ToDoList.GraphQL.Mutations
                 {
                     int id = context.GetArgument<int>("Id");
 
-                    await provider.GetTaskRepository().DeleteAsync(id);
+                    return await provider.GetTaskRepository().DeleteAsync(id);
 
-                    return true;
                 }
                 );
 
-            FieldAsync<BooleanGraphType>("changeStorageType",
+            FieldAsync<StringGraphType>("changeStorageType",
                     arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StorageTypeEnum>>()
                     {
                         Name = "storageType"
-                        }
+                    }
                     ),
                 resolve: async context =>
                 {
@@ -72,13 +69,14 @@ namespace ToDoList.GraphQL.Mutations
                     if (storageType == StorageType.XML)
                     {
                         service.Set("Storage", StorageType.XML.ToString());
+                        return StorageType.XML.ToString();
                     }
                     else
                     {
                         service.Set("Storage", StorageType.SQL.ToString());
+                        return StorageType.SQL.ToString();
                     }
 
-                    return true;
                 });
         }
 

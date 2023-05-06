@@ -29,7 +29,7 @@ namespace ToDoList.Repository
             return task.Id;
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task<bool> DeleteAsync(int id)
         {
             XElement taskElement = _document.Root
                 .Element("tasks")
@@ -41,7 +41,11 @@ namespace ToDoList.Repository
             {
                 taskElement.Remove();
                 await Task.Run(() => _document.Save(_path));
+
+                return true; 
             }
+            else
+                return false;
         }
 
         public async Task<IEnumerable<DBmodels.Task>> GetAllAsync()
@@ -78,7 +82,7 @@ namespace ToDoList.Repository
            );
         }
 
-        public async System.Threading.Tasks.Task UpdateStatusAsync(int id, bool IsCompleted)
+        public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(int id, bool IsCompleted)
         {
             XElement taskElement = _document.Root
                 .Element("tasks")
@@ -90,7 +94,12 @@ namespace ToDoList.Repository
             {
                 taskElement.Element("isCompleted").Value = IsCompleted.ToString();
                 await Task.Run(() => _document.Save(_path));
+
+                return true;
             }
+            else 
+                return false; 
+           
         }
     }
 }
