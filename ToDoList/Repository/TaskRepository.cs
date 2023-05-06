@@ -6,22 +6,24 @@ using ToDoList.Models;
 
 namespace ToDoList.Repository
 {
-    public class TasksRepository : ITasksRepository
+    public class TaskRepository : ITaskRepository
     {
         private readonly IDbConnection _connection;
 
-        public TasksRepository(IDbConnection connection)
+        public TaskRepository(IDbConnection connection)
         {
             _connection = connection;
         }
-        public async System.Threading.Tasks.Task CreateAsync(DBmodels.Task task)
+        public async System.Threading.Tasks.Task<int> CreateAsync(DBmodels.Task task)
         {
             try
             {
                 string query = @"INSERT INTO Tasks (category_id, title, deadline, is_completed)
                          VALUES (@CategoryId, @Title, @Deadline, @IsCompleted);
                          SELECT SCOPE_IDENTITY()";
-                await _connection.ExecuteAsync(query, task);
+                var id = await _connection.ExecuteScalarAsync<int>(query, task);
+
+                return id;
             }
             catch (Exception ex)
             {

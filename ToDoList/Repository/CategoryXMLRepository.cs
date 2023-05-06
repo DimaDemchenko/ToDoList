@@ -3,7 +3,7 @@ using ToDoList.DBmodels;
 
 namespace ToDoList.Repository
 {
-    public class CategoryXMLRepository : ICategoriesRepository
+    public class CategoryXMLRepository : ICategoryRepository
     {
         private readonly XDocument _document;
 

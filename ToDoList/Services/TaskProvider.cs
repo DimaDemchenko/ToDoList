@@ -17,7 +17,7 @@ namespace ToDoList.Services
             _config = config;
         }
 
-        public ITasksRepository GetTaskRepository()
+        public ITaskRepository GetTaskRepository()
         { 
             var storageType = _cookieService.Get("Storage");
 
@@ -27,11 +27,11 @@ namespace ToDoList.Services
             }
             else
             { 
-                return new TasksRepository(_connection);
+                return new TaskRepository(_connection);
             }
         }
 
-        public ICategoriesRepository GetCategoriesRepository() 
+        public ICategoryRepository GetCategoriesRepository() 
         {
             var storageType = _cookieService.Get("Storage");
 
@@ -41,7 +41,7 @@ namespace ToDoList.Services
             }
             else
             {
-                return new CategoriesRepository(_connection);
+                return new CategoryRepository(_connection);
             }
 
         }

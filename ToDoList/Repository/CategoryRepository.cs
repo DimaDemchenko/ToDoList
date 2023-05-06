@@ -4,11 +4,11 @@ using ToDoList.DBmodels;
 
 namespace ToDoList.Repository
 {
-    public class CategoriesRepository : ICategoriesRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly IDbConnection _connection;
 
-        public CategoriesRepository(IDbConnection connection)
+        public CategoryRepository(IDbConnection connection)
         {
             _connection = connection;
         }

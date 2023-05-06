@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace ToDoList.Repository
 {
-    public class TasksXMLRepository : ITasksRepository
+    public class TasksXMLRepository : ITaskRepository
     {
         private readonly XDocument _document;
         private readonly string _path;
@@ -13,7 +13,7 @@ namespace ToDoList.Repository
             _document = XDocument.Load(filePath);
             _path = filePath;
         }
-        public async System.Threading.Tasks.Task CreateAsync(DBmodels.Task task)
+        public async System.Threading.Tasks.Task<int> CreateAsync(DBmodels.Task task)
         {
             XElement taskElement = new XElement("task",
                 new XElement("id", task.Id),
@@ -25,6 +25,8 @@ namespace ToDoList.Repository
 
             _document.Root.Element("tasks").Add(taskElement);
             await Task.Run(() => _document.Save(_path));
+
+            return task.Id;
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(int id)

@@ -2,7 +2,7 @@
 
 namespace ToDoList.Repository
 {
-    public interface ICategoriesRepository
+    public interface ICategoryRepository
     {
         Task<Category> GetByIdAsync(int id);
 

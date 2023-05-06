@@ -9,10 +9,9 @@ namespace ToDoList.GraphQL.Mutations
 {
     public class TaskMutation : ObjectGraphType
     {
-        //refactor this method
         public TaskMutation(TaskProvider provider, CookieService service)
         {
-            FieldAsync<TaskType>("createTask",
+            FieldAsync<IntGraphType>("createTask",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<TaskInputType>>()
                     { Name = "task" }),
@@ -20,9 +19,7 @@ namespace ToDoList.GraphQL.Mutations
                 {
                     var task = context.GetArgument<DBmodels.Task>("task");
 
-                    await provider.GetTaskRepository().CreateAsync(task);
-
-                    return task;
+                    return await provider.GetTaskRepository().CreateAsync(task);
                 }
 
                 );
