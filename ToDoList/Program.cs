@@ -29,7 +29,7 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddGraphQL((options) =>
 {
-    options.AddSchema<TaskScheme>();
+    options.AddSchema<AppScheme>();
     options.AddGraphTypes();
     options.AddErrorInfoProvider(e => e.ExposeExceptionDetails = true);
     options.AddSystemTextJson();

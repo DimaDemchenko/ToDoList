@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using ToDoList.GraphQL.GraphQLTypes.CategoryTypes;
 using ToDoList.GraphQL.GraphQLTypes.TaskTypes;
 using ToDoList.Services;
 
@@ -30,6 +31,13 @@ namespace ToDoList.GraphQL.Queries
                 {
                     var tasks = await provider.GetTaskRepository().GetAllAsync();
                     return tasks;
+                });
+
+            FieldAsync<ListGraphType<CategoryType>>(
+                "categories", resolve:
+                async context =>
+                {
+                    return await provider.GetCategoriesRepository().GetAllAsync();
                 });
         }
     }
