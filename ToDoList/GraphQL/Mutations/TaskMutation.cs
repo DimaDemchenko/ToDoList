@@ -17,9 +17,10 @@ namespace ToDoList.GraphQL.Mutations
                     { Name = "task" }),
                 resolve: async context =>
                 {
+                    var storage = service.GetStorageFromHeader();
                     var task = context.GetArgument<DBmodels.Task>("task");
 
-                    return await provider.GetTaskRepository().CreateAsync(task);
+                    return await provider.GetTaskRepository(storage).CreateAsync(task);
                 }
 
                 );
@@ -34,10 +35,11 @@ namespace ToDoList.GraphQL.Mutations
                 }
                 ), resolve: async context =>
                 {
+                    var storage = service.GetStorageFromHeader();
                     int id = context.GetArgument<int>("Id");
                     bool status = context.GetArgument<bool>("status");
 
-                    return await provider.GetTaskRepository().UpdateStatusAsync(id, status);
+                    return await provider.GetTaskRepository(storage).UpdateStatusAsync(id, status);
                 }
                 );
 
@@ -48,14 +50,15 @@ namespace ToDoList.GraphQL.Mutations
                 }
                 ), resolve: async context =>
                 {
+                    var storage = service.GetStorageFromHeader();
                     int id = context.GetArgument<int>("Id");
 
-                    return await provider.GetTaskRepository().DeleteAsync(id);
+                    return await provider.GetTaskRepository(storage).DeleteAsync(id);
 
                 }
                 );
 
-            FieldAsync<StringGraphType>("changeStorageType",
+           /* FieldAsync<StringGraphType>("changeStorageType",
                     arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StorageTypeEnum>>()
                     {
@@ -68,16 +71,16 @@ namespace ToDoList.GraphQL.Mutations
 
                     if (storageType == StorageType.XML)
                     {
-                        service.Set("Storage", StorageType.XML.ToString());
+                        service.SetCookie("Storage", StorageType.XML.ToString());
                         return StorageType.XML.ToString();
                     }
                     else
                     {
-                        service.Set("Storage", StorageType.SQL.ToString());
+                        service.SetCookie("Storage", StorageType.SQL.ToString());
                         return StorageType.SQL.ToString();
                     }
 
-                });
+                });*/
         }
 
 

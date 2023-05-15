@@ -9,7 +9,7 @@ namespace ToDoList.GraphQL.Queries
     public class TaskQuery: ObjectGraphType
     {
 
-        public TaskQuery(StorageProvider provider)
+        public TaskQuery(StorageProvider provider, CookieService cookieService)
         {
             FieldAsync<ListGraphType<TaskType>>(
                 "tasks",
@@ -20,9 +20,10 @@ namespace ToDoList.GraphQL.Queries
                 }),
                 resolve: async context =>
                 {
-
+                    var storage = cookieService.GetStorageFromHeader();
                     bool status = context.GetArgument<bool>("status");
-                    var tasks = await provider.GetTaskRepository().GetAllByStatusAsync(status);
+                    var tasks = await provider.GetTaskRepository(storage).GetAllByStatusAsync(status);
+
                     return tasks;
                 });
 
@@ -30,7 +31,9 @@ namespace ToDoList.GraphQL.Queries
                 "allTasks",
                 resolve: async context =>
                 {
-                    var tasks = await provider.GetTaskRepository().GetAllAsync();
+                    var storage = cookieService.GetStorageFromHeader();
+                    var tasks = await provider.GetTaskRepository(storage).GetAllAsync();
+
                     return tasks;
                 });
 
@@ -38,7 +41,9 @@ namespace ToDoList.GraphQL.Queries
                 "categories", resolve:
                 async context =>
                 {
-                    return await provider.GetCategoriesRepository().GetAllAsync();
+                    var storage = cookieService.GetStorageFromHeader();
+
+                    return await provider.GetCategoriesRepository(storage).GetAllAsync();
                 });
         }
     }

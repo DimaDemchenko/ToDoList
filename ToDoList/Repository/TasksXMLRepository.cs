@@ -15,18 +15,40 @@ namespace ToDoList.Repository
         }
         public async System.Threading.Tasks.Task<int> CreateAsync(DBmodels.Task task)
         {
+            int id = 0;
+            bool isExist = true;
+            XElement elem = null;
+
+            do
+            {
+                elem = _document.Root
+                .Element("tasks")
+                .Elements("task")
+                .Where(t => (int)t.Element("id") == id)
+                .FirstOrDefault();
+
+                if (elem == null)
+                    isExist = false;
+                else
+                { 
+                    Random rnd = new Random();
+                    id = rnd.Next();
+                }
+            } while (isExist);
+
             XElement taskElement = new XElement("task",
-                new XElement("id", task.Id),
+                new XElement("id", id),
                 new XElement("categoryId", task.CategoryId),
                 new XElement("title", task.Title),
                 new XElement("deadline", task.Deadline),
                 new XElement("isCompleted", task.IsCompleted)
             );
 
+
             _document.Root.Element("tasks").Add(taskElement);
             await Task.Run(() => _document.Save(_path));
 
-            return task.Id;
+            return id;
         }
 
         public async System.Threading.Tasks.Task<bool> DeleteAsync(int id)

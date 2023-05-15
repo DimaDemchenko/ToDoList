@@ -1,5 +1,7 @@
 ﻿using ToDoList.EnumData;
 using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
 
 namespace ToDoList.Services
 {
@@ -12,7 +14,19 @@ namespace ToDoList.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public StorageType Get(string key)
+        public StorageType GetStorageFromHeader()
+        {
+            _httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("StorageType", out var storageTypeHeader);
+
+            if (string.IsNullOrEmpty(storageTypeHeader.FirstOrDefault()))
+                throw new InvalidOperationException();
+
+
+            var storage=  (StorageType)Enum.Parse(typeof(StorageType), storageTypeHeader.FirstOrDefault());
+            return storage;
+        }
+
+        public StorageType GetStorage(string key)
         {
             var value = _httpContextAccessor.HttpContext.Request.Cookies[key];
 
@@ -32,7 +46,7 @@ namespace ToDoList.Services
             return (StorageType)Enum.Parse(typeof(StorageType), value);
         }
 
-        public void Set(string key, string value)
+        public void SetCookie(string key, string value)
         {
             var options = new CookieOptions
             {

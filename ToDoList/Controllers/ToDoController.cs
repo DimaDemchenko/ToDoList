@@ -31,7 +31,7 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cookieService.Set("Storage", storageTypeModel.StorageType.ToString());
+                _cookieService.SetCookie("Storage", storageTypeModel.StorageType.ToString());
             }
 
             return RedirectToAction("Index");
@@ -40,7 +40,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async  Task<IActionResult> Recover(int id) 
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             await _provider.GetTaskRepository(currentStorage).UpdateStatusAsync(id, false);
 
@@ -50,7 +50,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> History() 
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository(currentStorage).GetAllByStatusAsync(true);
             IEnumerable<Category> categories = await _provider.GetCategoriesRepository(currentStorage).GetAllAsync();
@@ -61,7 +61,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository(currentStorage).GetAllByStatusAsync(false);
             IEnumerable<Category> categories = await _provider.GetCategoriesRepository(currentStorage).GetAllAsync();
@@ -72,7 +72,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             await _provider.GetTaskRepository(currentStorage).DeleteAsync(id);
 
@@ -82,7 +82,7 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             await _provider.GetTaskRepository(currentStorage).UpdateStatusAsync(id, true);
 
@@ -92,7 +92,7 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
-            var currentStorage = _cookieService.Get("Storage");
+            var currentStorage = _cookieService.GetStorage("Storage");
 
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace ToDoList.Controllers
             {
                 Tasks = tasks.OrderBy(c => c.Deadline).ToList(),
                 Categories = categories.ToList(),
-                selectedType = _cookieService.Get("Storage")
+                selectedType = _cookieService.GetStorage("Storage")
             };
             return indexModel;
         }
@@ -127,7 +127,7 @@ namespace ToDoList.Controllers
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(),
                 Categories = categories.ToList(),
-                selectedType = _cookieService.Get("Storage")
+                selectedType = _cookieService.GetStorage("Storage")
             };
 
             return historyModel;
