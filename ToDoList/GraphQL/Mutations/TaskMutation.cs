@@ -9,7 +9,7 @@ namespace ToDoList.GraphQL.Mutations
 {
     public class TaskMutation : ObjectGraphType
     {
-        public TaskMutation(TaskProvider provider, CookieService service)
+        public TaskMutation(StorageProvider provider, CookieService service)
         {
             FieldAsync<IntGraphType>("createTask",
                 arguments: new QueryArguments(

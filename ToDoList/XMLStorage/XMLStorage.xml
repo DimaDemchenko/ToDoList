@@ -24,25 +24,11 @@
   </categories>
   <tasks>
     <task>
-      <id>1</id>
-      <categoryId>1</categoryId>
-      <title>Task 1</title>
-      <deadline>2023-05-01T00:00:00</deadline>
-      <isCompleted>false</isCompleted>
-    </task>
-    <task>
       <id>3</id>
       <categoryId>2</categoryId>
       <title>Task 3</title>
       <deadline>2023-05-05T00:00:00</deadline>
       <isCompleted>True</isCompleted>
-    </task>
-    <task>
-      <id>9353</id>
-      <categoryId>5</categoryId>
-      <title>Нове завдання</title>
-      <deadline>2023-05-04T14:06:00</deadline>
-      <isCompleted>false</isCompleted>
     </task>
     <task>
       <id>14159</id>
@@ -52,24 +38,17 @@
       <isCompleted>True</isCompleted>
     </task>
     <task>
-      <id>4847</id>
-      <categoryId>3</categoryId>
-      <title>To do node.js</title>
-      <deadline>2023-04-25T09:50:00</deadline>
-      <isCompleted>false</isCompleted>
-    </task>
-    <task>
-      <id>0</id>
-      <categoryId>4</categoryId>
-      <title>To have a great time!</title>
-      <deadline>2023-04-30T04:49:00</deadline>
-      <isCompleted>false</isCompleted>
-    </task>
-    <task>
       <id>0</id>
       <categoryId>3</categoryId>
       <title>TaskAltair</title>
       <deadline>2023-05-31T00:00:00Z</deadline>
+      <isCompleted>false</isCompleted>
+    </task>
+    <task>
+      <id>0</id>
+      <categoryId>3</categoryId>
+      <title>example</title>
+      <deadline>2023-05-27T16:18:00</deadline>
       <isCompleted>false</isCompleted>
     </task>
   </tasks>

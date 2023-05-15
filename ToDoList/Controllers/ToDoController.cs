@@ -16,9 +16,9 @@ namespace ToDoList.Controllers
         private readonly ILogger<ToDoController> _logger;
         private readonly IMapper _mapper;
         private readonly CookieService _cookiesService;
-        private readonly TaskProvider _provider;
+        private readonly StorageProvider _provider;
 
-        public ToDoController(ILogger<ToDoController> logger, IMapper mapper, CookieService sessionService, TaskProvider provider)
+        public ToDoController(ILogger<ToDoController> logger, IMapper mapper, CookieService sessionService, StorageProvider provider)
         {
             _logger = logger;
             _mapper = mapper;
