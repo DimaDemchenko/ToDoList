@@ -15,14 +15,14 @@ namespace ToDoList.Controllers
     {
         private readonly ILogger<ToDoController> _logger;
         private readonly IMapper _mapper;
-        private readonly CookieService _cookiesService;
+        private readonly CookieService _cookieService;
         private readonly StorageProvider _provider;
 
-        public ToDoController(ILogger<ToDoController> logger, IMapper mapper, CookieService sessionService, StorageProvider provider)
+        public ToDoController(ILogger<ToDoController> logger, IMapper mapper, CookieService cookieService, StorageProvider provider)
         {
             _logger = logger;
             _mapper = mapper;
-            _cookiesService = sessionService;
+            _cookieService = cookieService;
             _provider = provider;
         }
 
@@ -31,7 +31,7 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cookiesService.Set("Storage", storageTypeModel.StorageType.ToString());
+                _cookieService.Set("Storage", storageTypeModel.StorageType.ToString());
             }
 
             return RedirectToAction("Index");
@@ -40,7 +40,9 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async  Task<IActionResult> Recover(int id) 
         {
-            await _provider.GetTaskRepository().UpdateStatusAsync(id, false);
+            var currentStorage = _cookieService.Get("Storage");
+
+            await _provider.GetTaskRepository(currentStorage).UpdateStatusAsync(id, false);
 
             return RedirectToAction("Index");
         }
@@ -48,8 +50,10 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> History() 
         {
-            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(true);
-            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
+            var currentStorage = _cookieService.Get("Storage");
+
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository(currentStorage).GetAllByStatusAsync(true);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository(currentStorage).GetAllAsync();
 
             return View(CreateHistoryViewModel(tasks, categories));
         }
@@ -57,8 +61,10 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(false);
-            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
+            var currentStorage = _cookieService.Get("Storage");
+
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository(currentStorage).GetAllByStatusAsync(false);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository(currentStorage).GetAllAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
         }
@@ -66,7 +72,9 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _provider.GetTaskRepository().DeleteAsync(id);
+            var currentStorage = _cookieService.Get("Storage");
+
+            await _provider.GetTaskRepository(currentStorage).DeleteAsync(id);
 
             return RedirectToAction("Index"); 
         }
@@ -74,7 +82,9 @@ namespace ToDoList.Controllers
         [HttpGet]
         public async Task<IActionResult> Complete(int id)
         {
-            await _provider.GetTaskRepository().UpdateStatusAsync(id, true);
+            var currentStorage = _cookieService.Get("Storage");
+
+            await _provider.GetTaskRepository(currentStorage).UpdateStatusAsync(id, true);
 
             return RedirectToAction("Index");
         }
@@ -82,18 +92,19 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskValidationModel taskValidation) 
         {
+            var currentStorage = _cookieService.Get("Storage");
 
             if (ModelState.IsValid)
             {
                 var task = _mapper.Map<DBmodels.Task>(taskValidation);
 
-                await _provider.GetTaskRepository().CreateAsync(task);
+                await _provider.GetTaskRepository(currentStorage).CreateAsync(task);
 
                 return RedirectToAction("Index");
             }
 
-            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository().GetAllByStatusAsync(false);
-            IEnumerable<Category> categories = await _provider.GetCategoriesRepository().GetAllAsync();
+            IEnumerable<DBmodels.Task> tasks = await _provider.GetTaskRepository(currentStorage).GetAllByStatusAsync(false);
+            IEnumerable<Category> categories = await _provider.GetCategoriesRepository(currentStorage).GetAllAsync();
 
             return View("Index", CreateIndexViewModel(tasks, categories));
         }
@@ -104,7 +115,7 @@ namespace ToDoList.Controllers
             {
                 Tasks = tasks.OrderBy(c => c.Deadline).ToList(),
                 Categories = categories.ToList(),
-                selectedType = _cookiesService.Get("Storage")
+                selectedType = _cookieService.Get("Storage")
             };
             return indexModel;
         }
@@ -116,7 +127,7 @@ namespace ToDoList.Controllers
                 Tasks = tasks.OrderBy(c => c.Deadline)
                             .ToList(),
                 Categories = categories.ToList(),
-                selectedType = _cookiesService.Get("Storage")
+                selectedType = _cookieService.Get("Storage")
             };
 
             return historyModel;

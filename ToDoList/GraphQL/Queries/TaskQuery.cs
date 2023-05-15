@@ -20,6 +20,7 @@ namespace ToDoList.GraphQL.Queries
                 }),
                 resolve: async context =>
                 {
+
                     bool status = context.GetArgument<bool>("status");
                     var tasks = await provider.GetTaskRepository().GetAllByStatusAsync(status);
                     return tasks;
