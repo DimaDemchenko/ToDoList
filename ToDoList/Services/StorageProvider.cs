@@ -4,22 +4,19 @@ using ToDoList.Repository;
 
 namespace ToDoList.Services
 {
-    public class TaskProvider
+    public class StorageProvider
     {
-        private readonly CookieService _cookieService;
         private readonly IDbConnection _connection;
         private readonly IConfiguration _config;
 
-        public TaskProvider(CookieService cookieService, IDbConnection connection, IConfiguration config)
+        public StorageProvider(IDbConnection connection, IConfiguration config)
         {
-            _cookieService = cookieService;
             _connection = connection;
             _config = config;
         }
 
-        public ITaskRepository GetTaskRepository()
+        public ITaskRepository GetTaskRepository(StorageType storageType)
         { 
-            var storageType = _cookieService.Get("Storage");
 
             if (storageType == StorageType.XML)
             {
@@ -31,9 +28,8 @@ namespace ToDoList.Services
             }
         }
 
-        public ICategoryRepository GetCategoriesRepository() 
+        public ICategoryRepository GetCategoriesRepository(StorageType storageType) 
         {
-            var storageType = _cookieService.Get("Storage");
 
             if (storageType == StorageType.XML)
             {
