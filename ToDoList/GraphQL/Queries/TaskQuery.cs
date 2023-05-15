@@ -9,7 +9,7 @@ namespace ToDoList.GraphQL.Queries
     public class TaskQuery: ObjectGraphType
     {
 
-        public TaskQuery(StorageProvider provider, CookieService cookieService)
+        public TaskQuery(StorageProvider provider, RequestService cookieService)
         {
             FieldAsync<ListGraphType<TaskType>>(
                 "tasks",

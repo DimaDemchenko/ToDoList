@@ -5,11 +5,11 @@ using Microsoft.VisualBasic;
 
 namespace ToDoList.Services
 {
-    public class CookieService
+    public class RequestService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CookieService(IHttpContextAccessor httpContextAccessor)
+        public RequestService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
@@ -19,16 +19,19 @@ namespace ToDoList.Services
             _httpContextAccessor.HttpContext!.Request.Headers.TryGetValue("StorageType", out var storageTypeHeader);
 
             if (string.IsNullOrEmpty(storageTypeHeader.FirstOrDefault()))
-                throw new InvalidOperationException();
+                throw new Exception();
 
-
-            var storage=  (StorageType)Enum.Parse(typeof(StorageType), storageTypeHeader.FirstOrDefault());
+            bool isValidStorage = Enum.TryParse(storageTypeHeader.FirstOrDefault(), out StorageType storage);
+            
+            if (!isValidStorage)
+                throw new Exception(); 
+            
             return storage;
         }
 
-        public StorageType GetStorage(string key)
+        public StorageType GetStorageFromCookie()
         {
-            var value = _httpContextAccessor.HttpContext.Request.Cookies[key];
+            var value = _httpContextAccessor.HttpContext.Request.Cookies["Storage"];
 
             if (value == null)
             {
@@ -40,7 +43,7 @@ namespace ToDoList.Services
                     SameSite = SameSiteMode.Strict
                 };
                 value = StorageType.SQL.ToString();
-                _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, options);
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("Storage", value, options);
             }
 
             return (StorageType)Enum.Parse(typeof(StorageType), value);
